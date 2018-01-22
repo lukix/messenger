@@ -1,0 +1,13 @@
+{
+  "name": "messenger",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Łukasz Jenczmyk"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "dependencies": {
+    "components-font-awesome": "4.7.0"
+  }
+}

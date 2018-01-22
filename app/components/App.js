@@ -31,14 +31,14 @@ const style = {
 		margin: '50px 0 40px 0',
 		height: '90px',
 		lineHeight: '90px',
-	}
+	},
 }
 
 export default function App() {
 	return <div style={ style.main }>
 		<MenuBar menuItems={[ 'My Keys', 'Contacts', 'Settings' ]} />
 		<h1 style={ style.title }>Messenger</h1>
-		<Card content="Lorem ipsum dolor sit ament" />
-		<Card content="Lorem ipsum dolor" />
+		<Card>Lorem ipsum dolor sit ament</Card>
+		<Card>Lorem ipsum dolor</Card>
 	</div>
 }

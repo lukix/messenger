@@ -14,8 +14,8 @@ const style = {
 		color: Colors.textDark,
 	},
 }
-export default function Card({ style: customStyle, content }) {
+export default function Card({ style: customStyle, children }) {
 	return <div style={{ ...style.main, ...customStyle }}>
-		<div>{ content }</div>
+		<div>{ children }</div>
 	</div>
 }

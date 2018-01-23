@@ -2,6 +2,8 @@ import React from 'react'
 import Card from './Card'
 import TextareaAutosize from 'react-autosize-textarea'
 import SharedStyles from '../others/SharedStyles'
+import Message from './Message'
+import { Scrollbars } from 'react-custom-scrollbars'
 
 const style = {
 	main: {
@@ -13,6 +15,7 @@ const style = {
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		fontWeight: 'bold',
+		fontSize: '1.1rem',
 	},
 	pin: {
 		height: '24px',
@@ -20,8 +23,10 @@ const style = {
 	},
 	conversationBox: {
 		...SharedStyles.textFields,
-		height: '100px',
 		margin: '10px 0',
+	},
+	scrollArea: {
+		padding: '10px',
 	},
 	textarea: {
 		...SharedStyles.textFields,
@@ -44,6 +49,13 @@ const style = {
 	},
 }
 export default function ConversationCard({ style: customStyle }) {
+	const scrollbarProps = {
+		autoHide: true,
+		autoHideTimeout: 500,
+		autoHeight: true,
+		autoHeightMin: 100,
+		autoHeightMax: 300,
+	}
 	return <Card style={{ ...style.main, ...customStyle }}>
 		<header style={ style.header }>
 			<div>Roger Federer</div>
@@ -52,7 +64,22 @@ export default function ConversationCard({ style: customStyle }) {
 			</div>
 		</header>
 		<div style={ style.conversationBox }>
-			
+			<Scrollbars {...scrollbarProps}>
+				<div style={ style.scrollArea }>
+					<Message left={ true }>Hi!</Message>
+					<Message left={ false }>Hey. Whats up</Message>
+					<Message left={ true }>Nothing, bye.</Message>
+					<Message left={ false }>
+						Sample message. This is very long message, which is supposed to take more
+						than one line of text.
+					</Message>
+					<Message left={ false }>Hey. Whats up</Message>
+					<Message left={ true }>Nothing, bye.</Message>
+					<Message left={ false }>Lorem ipsum</Message>
+					<Message left={ false }>Dolor sit ament</Message>
+					<Message left={ true }>ok</Message>
+				</div>
+			</Scrollbars>
 		</div>
 		<div style={ style.newMessageBox }>
 			<TextareaAutosize style={ style.textarea } placeholder='Type a message...' />

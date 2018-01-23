@@ -3,6 +3,7 @@ import Colors from '../others/Colors'
 import MenuBar from './MenuBar'
 import Card from './Card'
 import SearchCard from './SearchCard'
+import ConversationCard from './ConversationCard'
 
 const style = {
 	main: {
@@ -43,6 +44,7 @@ export default function App() {
 		<MenuBar menuItems={[ 'My Keys', 'Contacts', 'Settings' ]} />
 		<h1 style={ style.title }>Messenger</h1>
 		<SearchCard style={{ width: '600px' }} />
+		<ConversationCard style={{ width: '600px' }} />
 		<Card style={{ width: '600px' }} >Lorem ipsum dolor</Card>
 	</div>
 }

@@ -25,6 +25,7 @@
     "event-stream": "3.3.4",
     "gulp": "3.9.1",
     "gulp-util": "3.0.8",
+    "react-autosize-textarea": "3.0.2",
     "vinyl-source-stream": "2.0.0"
   },
   "dependencies": {

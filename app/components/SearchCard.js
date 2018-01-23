@@ -1,7 +1,7 @@
 import React from 'react'
 import Card from './Card'
 import Autosuggest from 'react-autosuggest'
-import Colors from '../others/Colors'
+import SharedStyles from '../others/SharedStyles'
 
 const style = {
 	main: {
@@ -15,15 +15,7 @@ const style = {
 		justifyContent: 'spaceBetween',
 	},
 	button: {
-		background: Colors.mainDark,
-		display: 'block',
-		border: 'none',
-		fontSize: '24px',
-		color: 'white',
-		padding: '0 8px',
-		cursor: 'pointer',
-		height: '40px',
-		borderRadius: '4px',
+		...SharedStyles.button,
 	},
 	autosuggestWrapper: {
 		flex: '1',

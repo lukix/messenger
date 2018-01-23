@@ -25,6 +25,10 @@ const style = {
 		height: '40px',
 		borderRadius: '4px',
 	},
+	autosuggestWrapper: {
+		flex: '1',
+		margin: '0 6px',
+	},
 }
 const contacts = [
 	'Elon Musk',
@@ -46,7 +50,7 @@ export default class SearchCard extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			customStyle: props.customStyle,
+			customStyle: props.style,
 			value: '',
 			suggestions: [],
 		}
@@ -81,7 +85,7 @@ export default class SearchCard extends React.Component {
 				<button style={ style.button }>
 					<i className="fa fa-address-book-o" aria-hidden="true"></i>
 				</button>
-				<div style={{ flex: '1', margin: '0 6px' }}>
+				<div style={ style.autosuggestWrapper }>
 					<Autosuggest
 						suggestions={suggestions}
 						onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}

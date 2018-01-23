@@ -4,9 +4,8 @@ import Colors from '../others/Colors'
 const style = {
 	main: {
 		background: 'white',
-		width: '400px',
 		boxShadow: `10px -10px 5px 0px ${Colors.shadow}`,
-		margin: '0px auto',
+		margin: '0px 20px',
 		marginTop: '40px',
 		textAlign: 'left',
 		padding: '20px',

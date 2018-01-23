@@ -20,6 +20,9 @@ const style = {
 		width: '100vw',
 		minHeight: '100%',
 		textAlign: 'center',
+		display: 'flex',
+		alignItems: 'center',
+		flexDirection: 'column',
 	},
 	title: {
 		fontFamily: '"OpenSans"',
@@ -39,7 +42,7 @@ export default function App() {
 	return <div style={ style.main }>
 		<MenuBar menuItems={[ 'My Keys', 'Contacts', 'Settings' ]} />
 		<h1 style={ style.title }>Messenger</h1>
-		<SearchCard />
-		<Card>Lorem ipsum dolor</Card>
+		<SearchCard style={{ width: '600px' }} />
+		<Card style={{ width: '600px' }} >Lorem ipsum dolor</Card>
 	</div>
 }

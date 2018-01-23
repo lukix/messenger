@@ -5,6 +5,8 @@ const style = {
 	main: {
 		background: 'rgba(0, 0, 0, 0.6)',
 		height: '50px',
+		width: '100%',
+		boxSizing: 'border-box',
 		color: Colors.textLight,
 		fontSize: '1.3rem',
 		padding: '0 20px',

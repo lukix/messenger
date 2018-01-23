@@ -12,13 +12,13 @@ const destDir = './build'
 // ----------------------------------------------------------------------------
 gulp.task('copy', () => {
 	return gulp.src(
-			[srcDir + '/**/*', '!' + srcDir + '/**/*.js'],	//Copy everything besides .js files
-			{ nodir: true }
-		).pipe(gulp.dest(destDir))
+		[srcDir + '/**/*', '!' + srcDir + '/**/*.js'],	//Copy everything besides .js files
+		{ nodir: true }
+	).pipe(gulp.dest(destDir))
 })
 gulp.task('copyBower', () => {
 	return gulp.src(['./bower_components/**/*'], { nodir: true })  //Copy bower_components
-				.pipe(gulp.dest(destDir + '/bower_components'))
+		.pipe(gulp.dest(destDir + '/bower_components'))
 })
 
 gulp.task('scripts', function () {
@@ -47,12 +47,16 @@ function bundleApp() {
 		entries: srcDir + '/index.js',
 		debug: true,
 	})
-	.transform('babelify', {
-		presets: ['es2015'],
-		plugins: ['transform-react-jsx', 'transform-object-rest-spread'],
-	})
-	.bundle()
-	.on('error', gutil.log)
-	.pipe(source('bundle.js'))
-	.pipe(gulp.dest(destDir))
+		.transform('babelify', {
+			presets: ['es2015'],
+			plugins: [
+				'transform-react-jsx',
+				'transform-object-rest-spread',
+				'transform-class-properties',
+			],
+		})
+		.bundle()
+		.on('error', gutil.log)
+		.pipe(source('bundle.js'))
+		.pipe(gulp.dest(destDir))
 }

@@ -5,7 +5,6 @@ const style = {
 	main: {
 		background: 'white',
 		width: '400px',
-		minHeight: '50px',
 		boxShadow: `10px -10px 5px 0px ${Colors.shadow}`,
 		margin: '0px auto',
 		marginTop: '40px',

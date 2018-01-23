@@ -2,6 +2,7 @@ import React from 'react'
 import Colors from '../others/Colors'
 import MenuBar from './MenuBar'
 import Card from './Card'
+import SearchCard from './SearchCard'
 
 const style = {
 	main: {
@@ -28,7 +29,7 @@ const style = {
 		backgroundColor: Colors.mainDark,
 		display: 'inline-block',
 		padding: '0px 40px 10px 40px',
-		margin: '50px 0 40px 0',
+		margin: '50px 0 20px 0',
 		height: '90px',
 		lineHeight: '90px',
 	},
@@ -38,7 +39,7 @@ export default function App() {
 	return <div style={ style.main }>
 		<MenuBar menuItems={[ 'My Keys', 'Contacts', 'Settings' ]} />
 		<h1 style={ style.title }>Messenger</h1>
-		<Card>Lorem ipsum dolor sit ament</Card>
+		<SearchCard />
 		<Card>Lorem ipsum dolor</Card>
 	</div>
 }

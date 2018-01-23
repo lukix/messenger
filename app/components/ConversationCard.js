@@ -6,9 +6,7 @@ import Message from './Message'
 import { Scrollbars } from 'react-custom-scrollbars'
 
 const style = {
-	main: {
-
-	},
+	main: {},
 	header: {
 		display: 'flex',
 		flexDirection: 'row',
@@ -48,7 +46,19 @@ const style = {
 		alignItems: 'center',
 	},
 }
-export default function ConversationCard({ style: customStyle }) {
+export default function ConversationCard({
+	style: customStyle,
+	conversation,
+	onMessageSend,
+	onPinChange,
+}) {
+	const { name: contactName, publicKey: contactKey, messages, pinned } = conversation
+	const conversationName = contactName ? contactName : contactKey
+	const pinnedStateStyle = { filter: pinned ? 'grayscale(0%)' : 'grayscale(100%)' }
+	const messagesList = messages.map(
+		(message, index) =>
+			<Message key={ index } left={ !message.isYours }>{ message.text }</Message>
+	)
 	const scrollbarProps = {
 		autoHide: true,
 		autoHideTimeout: 500,
@@ -58,26 +68,20 @@ export default function ConversationCard({ style: customStyle }) {
 	}
 	return <Card style={{ ...style.main, ...customStyle }}>
 		<header style={ style.header }>
-			<div>Roger Federer</div>
+			<div>{ conversationName }</div>
 			<div>
-				<img src="./img/pin.png" alt="pin" style={ style.pin } />
+				<img
+					src="./img/pin.png"
+					alt="pin"
+					style={{ ...style.pin, ...pinnedStateStyle }}
+					onClick={ () => onPinChange(!pinned) }
+				/>
 			</div>
 		</header>
 		<div style={ style.conversationBox }>
 			<Scrollbars {...scrollbarProps}>
 				<div style={ style.scrollArea }>
-					<Message left={ true }>Hi!</Message>
-					<Message left={ false }>Hey. Whats up</Message>
-					<Message left={ true }>Nothing, bye.</Message>
-					<Message left={ false }>
-						Sample message. This is very long message, which is supposed to take more
-						than one line of text.
-					</Message>
-					<Message left={ false }>Hey. Whats up</Message>
-					<Message left={ true }>Nothing, bye.</Message>
-					<Message left={ false }>Lorem ipsum</Message>
-					<Message left={ false }>Dolor sit ament</Message>
-					<Message left={ true }>ok</Message>
+					{ messagesList }
 				</div>
 			</Scrollbars>
 		</div>

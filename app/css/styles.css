@@ -2,9 +2,6 @@ html, body {
 	margin: 0;
 	padding: 0;
 }
-body {
-	min-width: 100vw;
-}
 @font-face {
 	font-family: OpenSans;
 	src: url('../fonts/OpenSans-Regular.ttf');

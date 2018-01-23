@@ -5,8 +5,7 @@ const style = {
 	main: {
 		background: 'white',
 		boxShadow: `10px -10px 5px 0px ${Colors.shadow}`,
-		margin: '0px 20px',
-		marginTop: '40px',
+		margin: '20px 20px',
 		textAlign: 'left',
 		padding: '20px',
 		color: Colors.textDark,

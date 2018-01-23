@@ -18,12 +18,12 @@ const style = {
 			url("./img/pattern.png"),
 			${Colors.mainDark}
 		`,
-		width: '100vw',
 		minHeight: '100%',
 		textAlign: 'center',
 		display: 'flex',
 		alignItems: 'center',
 		flexDirection: 'column',
+		overflow: 'hidden',
 	},
 	title: {
 		fontFamily: '"OpenSans"',
@@ -40,11 +40,13 @@ const style = {
 }
 
 export default function App() {
+	const cardWidth = '600px'
+	const cardMaxWidth = 'calc(100% - 60px)'
 	return <div style={ style.main }>
 		<MenuBar menuItems={[ 'My Keys', 'Contacts', 'Settings' ]} />
 		<h1 style={ style.title }>Messenger</h1>
-		<SearchCard style={{ width: '600px' }} />
-		<ConversationCard style={{ width: '600px' }} />
-		<Card style={{ width: '600px' }} >Lorem ipsum dolor</Card>
+		<SearchCard style={{ width: cardWidth, maxWidth: cardMaxWidth }} />
+		<ConversationCard style={{ width: cardWidth, maxWidth: cardMaxWidth }} />
+		<ConversationCard style={{ width: cardWidth, maxWidth: cardMaxWidth }} />
 	</div>
 }

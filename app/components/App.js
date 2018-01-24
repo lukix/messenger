@@ -79,6 +79,7 @@ export default function App() {
 				key={ index }
 				style={{ width: cardWidth, maxWidth: cardMaxWidth }}
 				conversation={ conversation }
+				onMessageSend={ () => {} }
 			/>
 	)
 	return <div style={ style.main }>

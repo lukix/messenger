@@ -1,9 +1,9 @@
 import React from 'react'
 import Card from './Card'
-import TextareaAutosize from 'react-autosize-textarea'
 import SharedStyles from '../others/SharedStyles'
 import Message from './Message'
 import { Scrollbars } from 'react-custom-scrollbars'
+import MessageSendPanel from './MessageSendPanel'
 
 const style = {
 	main: {},
@@ -25,25 +25,6 @@ const style = {
 	},
 	scrollArea: {
 		padding: '10px',
-	},
-	textarea: {
-		...SharedStyles.textFields,
-		width: '100%',
-		padding: '8px 8px',
-		resize: 'none',
-		marginRight: '8px',
-	},
-	newMessageBox: {
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'flex-start',
-	},
-	button: {
-		...SharedStyles.button,
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
 	},
 }
 export default function ConversationCard({
@@ -85,11 +66,6 @@ export default function ConversationCard({
 				</div>
 			</Scrollbars>
 		</div>
-		<div style={ style.newMessageBox }>
-			<TextareaAutosize style={ style.textarea } placeholder='Type a message...' />
-			<button style={ style.button }>
-				<i className="fa fa-paper-plane-o" aria-hidden="true"></i>
-			</button>
-		</div>
+		<MessageSendPanel onMessageSend={ onMessageSend } />
 	</Card>
 }

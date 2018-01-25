@@ -68,9 +68,15 @@ const sampleConversations = [
 		pinned: true,
 	},
 ]
+const extractContacts = function (conversations) {
+	return conversations.map(function convertConversationToContact({ name, publicKey }) {
+		return { name, publicKey }
+	})
+}
 
 export default function App() {
 	const conversations = sampleConversations
+	const contacts = extractContacts(conversations)
 	const cardWidth = '600px'
 	const cardMaxWidth = 'calc(100% - 60px)'
 	const conversationsList = conversations.map(
@@ -85,7 +91,7 @@ export default function App() {
 	return <div style={ style.main }>
 		<MenuBar menuItems={[ 'My Keys', 'Contacts', 'Settings' ]} />
 		<h1 style={ style.title }>Messenger</h1>
-		<SearchCard style={{ width: cardWidth, maxWidth: cardMaxWidth }} />
+		<SearchCard style={{ width: cardWidth, maxWidth: cardMaxWidth }} contacts={contacts} />
 		{ conversationsList }
 	</div>
 }

@@ -16,7 +16,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		...ownProps,
 		onMessageSend: (publicKey, message) => {
 			dispatch(addConversationAction(publicKey))
 			dispatch(sendMessageAction(publicKey, message))

@@ -44,8 +44,10 @@ export default class SearchCard extends React.Component {
 			suggestions: [],
 			contacts: props.contacts,
 			searchResult: null,
+			onMessageSend: props.onMessageSend,
 		}
 		this.search = this.search.bind(this)
+		this.messageSendHandler = this.messageSendHandler.bind(this)
 		this.onChange = this.onChange.bind(this)
 		this.onKeyPress = this.onKeyPress.bind(this)
 		this.onSearchButtonClick = this.onSearchButtonClick.bind(this)
@@ -80,6 +82,10 @@ export default class SearchCard extends React.Component {
 				})
 			}
 		}
+	}
+	messageSendHandler(publicKey, message) {
+		this.setState({ searchResult: null })
+		this.state.onMessageSend(publicKey, message)
 	}
 	onChange(event, { newValue }) {
 		this.setState({
@@ -124,6 +130,7 @@ export default class SearchCard extends React.Component {
 				: <NewConversation
 					publicKey={ searchResult.newConversationKey }
 					style={ style.searchResults }
+					onMessageSend={ this.messageSendHandler }
 				/>
 		return <Card style={{ ...style.main, ...customStyle }}>
 			<div style={ style.searchPanel }>

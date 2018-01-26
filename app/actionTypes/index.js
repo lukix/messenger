@@ -1,0 +1,2 @@
+export const ADD_CONVERSATION = 'ADD_CONVERSATION'
+export const SEND_MESSAGE = 'SEND_MESSAGE'

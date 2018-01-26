@@ -39,13 +39,25 @@ const sampleConversations = [
 ];
 
 (function initializeReact() {
-	const initialState = {
+	const readStateFromLocalStorage = (objectName) => {
+		return JSON.parse(localStorage.getItem(objectName))
+	}
+		
+	const localStorageObjectName = 'appState'
+	const defaultEmptyState = {
 		keys: [],
 		notifications: [],
 		conversations: sampleConversations,
 		settings: {},
 	}
+	const initialState = readStateFromLocalStorage(localStorageObjectName) || defaultEmptyState
 	const store = createStore(mainReducer, initialState, applyMiddleware(thunkMiddleware))
+	store.subscribe(function handleStateChange() {
+		localStorage.setItem(
+			localStorageObjectName,
+			JSON.stringify(store.getState())
+		)
+	})
 	const Root = ({ store }) => (
 		<Provider store={store}>
 			<BrowserRouter>

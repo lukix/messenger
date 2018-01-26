@@ -34,10 +34,11 @@ export default class ConversationCard extends React.Component {
 			customStyle: props.style,
 			conversation: props.conversation,
 			onMessageSend: props.onMessageSend,
-			onPinChange: props.onPinChange,
+			onPinStateChange: props.onPinStateChange,
 			scrollToBottomFlag: false,
 		}
 		this.messageSendHandler = this.messageSendHandler.bind(this)
+		this.pinStateChangeHandler = this.pinStateChangeHandler.bind(this)
 	}
 	componentDidMount() {
 		this.refs.scrollbars.scrollToBottom()
@@ -55,9 +56,14 @@ export default class ConversationCard extends React.Component {
 		this.state.onMessageSend(this.state.conversation.publicKey, message)
 		this.setState({ scrollToBottomFlag: true })
 	}
-
+	pinStateChangeHandler() {
+		this.state.onPinStateChange(
+			this.state.conversation.publicKey,
+			!this.state.conversation.pinned
+		)
+	}
 	render() {
-		const { customStyle, conversation, onPinChange } = this.state
+		const { customStyle, conversation } = this.state
 		const { name: contactName, publicKey: contactKey, messages, pinned } = conversation
 		const conversationName = contactName ? contactName : contactKey
 		const pinnedStateStyle = { filter: pinned ? 'grayscale(0%)' : 'grayscale(100%)' }
@@ -80,7 +86,7 @@ export default class ConversationCard extends React.Component {
 						src="./img/pin.png"
 						alt="pin"
 						style={{ ...style.pin, ...pinnedStateStyle }}
-						onClick={ () => onPinChange(!pinned) }
+						onClick={ this.pinStateChangeHandler }
 					/>
 				</div>
 			</header>

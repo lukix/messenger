@@ -11,6 +11,7 @@ export default function ConversationsList({
 	cardStyle,
 	conversations,
 	onMessageSend,
+	onPinStateChange,
 }) {
 	const conversationsList = conversations.map(
 		(conversation, index) =>
@@ -19,6 +20,7 @@ export default function ConversationsList({
 				style={ cardStyle }
 				conversation={ conversation }
 				onMessageSend={ onMessageSend }
+				onPinStateChange={ onPinStateChange }
 			/>
 	)
 	return <div style={{ ...style.main, ...customStyle }}>

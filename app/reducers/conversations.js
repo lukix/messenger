@@ -1,10 +1,10 @@
-import { SEND_MESSAGE, ADD_CONVERSATION } from '../actionTypes/index'
+import { SEND_MESSAGE, ADD_CONVERSATION, CHANGE_PIN_STATE } from '../actionTypes/index'
 
 const createConversation = (publicKey) => ({
 	publicKey,
 	name: '',
 	messages: [],
-	pinned: false,
+	pinned: true,
 })
 const createMessage = (messageText) => ({
 	text: messageText,
@@ -24,6 +24,12 @@ const conversationsReducer = (conversations = [], action) => {
 			return conversations.map((conversation) => {
 				return conversation.publicKey === action.publicKey
 					?	addMessageToConversation(conversation, action.message)
+					: conversation
+			})
+		case CHANGE_PIN_STATE:
+			return conversations.map((conversation) => {
+				return conversation.publicKey === action.publicKey
+					?	Object.assign({}, conversation, { pinned: action.pinned })
 					: conversation
 			})
 		default:

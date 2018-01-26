@@ -5,7 +5,8 @@ import { sendMessageAction, changePinStateAction } from '../actions/index'
 const mapStateToProps = (state, ownProps) => {
 	return {
 		...ownProps,
-		conversations: state.conversations,
+		unpinnedConversations: state.conversations.filter((conversation) => !conversation.pinned),
+		pinnedConversations: state.conversations.filter((conversation) => conversation.pinned),
 	}
 }
 

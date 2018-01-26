@@ -45,6 +45,7 @@ export default class SearchCard extends React.Component {
 			contacts: props.contacts,
 			searchResult: null,
 			onMessageSend: props.onMessageSend,
+			onPinStateChange: props.onPinStateChange,
 		}
 		this.search = this.search.bind(this)
 		this.messageSendHandler = this.messageSendHandler.bind(this)
@@ -61,8 +62,8 @@ export default class SearchCard extends React.Component {
 				.map(({ publicKey }) => publicKey)
 				.includes(searchText)
 			if(isExistingContact) {
-				//TODO: Pin found conversation
-				console.log('Pin found conversation')
+				this.state.onPinStateChange(searchText, true)
+				this.resetSearchResults()
 			} else {
 				this.setState({
 					searchResult: { newConversationKey: searchText },
@@ -72,10 +73,10 @@ export default class SearchCard extends React.Component {
 			const matchingContacts = this.state.contacts.filter(function hasSameBegining(contact) {
 				return contact.name.substr(0, searchText.length) === searchText
 			})
-			const foundExactResult = matchingContacts.some(contact => contact.name === searchText)
-			if(foundExactResult) {
-				//TODO: Pin found conversation
-				console.log('Pin found conversation')
+			const exactResult = matchingContacts.find(contact => contact.name === searchText)
+			if(exactResult !== null) {
+				this.state.onPinStateChange(exactResult.publicKey, true)
+				this.resetSearchResults()
 			} else {
 				this.setState({
 					searchResult: { contacts: matchingContacts, searchText },
@@ -83,8 +84,11 @@ export default class SearchCard extends React.Component {
 			}
 		}
 	}
+	resetSearchResults() {
+		this.setState({ searchResult: null, value: '' })
+	}
 	messageSendHandler(publicKey, message) {
-		this.setState({ searchResult: null })
+		this.resetSearchResults()
 		this.state.onMessageSend(publicKey, message)
 	}
 	onChange(event, { newValue }) {

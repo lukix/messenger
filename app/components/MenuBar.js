@@ -1,5 +1,6 @@
 import React from 'react'
 import Colors from '../others/Colors'
+import MediaQuery from 'react-responsive'
 
 const style = {
 	main: {
@@ -34,6 +35,12 @@ const style = {
 		height: '50px',
 		lineHeight: '50px',
 		cursor: 'pointer',
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	label: {
+		marginLeft: '7px',
 	},
 }
 
@@ -49,14 +56,18 @@ export default function MenuBar() {
 				menuItems.map((item, index) =>
 					<li key={ index } style={ style.menuItem }>
 						{ <i className={`fa ${item.icon}`} aria-hidden="true"></i> }
-						{' '}{ item.label }
+						<MediaQuery minDeviceWidth={ 500 }>
+							<span style={ style.label }>{ item.label }</span>
+						</MediaQuery>
 					</li>
 				)
 			}
 		</ul>
 		<div style={ style.notifications }>
 			<i className="fa fa-bell" aria-hidden="true"></i>
-			{ ' Notifications' }
+			<MediaQuery minDeviceWidth={ 700 }>
+				<span style={ style.label }>Notifications</span>
+			</MediaQuery>
 		</div>
 	</div>
 }

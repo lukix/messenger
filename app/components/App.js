@@ -1,4 +1,5 @@
 import React from 'react'
+import MediaQuery from 'react-responsive'
 import Colors from '../others/Colors'
 import MenuBar from './MenuBar'
 import SearchCardContainer from '../containers/SearchCardContainer'
@@ -27,7 +28,6 @@ const style = {
 	title: {
 		fontFamily: '"OpenSans"',
 		color: Colors.textLight,
-		fontSize: '5rem',
 		fontWeight: 'normal',
 		backgroundColor: Colors.mainDark,
 		display: 'inline-block',
@@ -41,9 +41,17 @@ const style = {
 export default function App() {
 	const cardWidth = '600px'
 	const cardMaxWidth = 'calc(100% - 60px)'
+	const titleStyles = (matches) => ({
+		...style.title,
+		...(matches ? {} : { margin: '20px 0 15px 0' } ),
+		fontSize: matches ? '5rem' : '3.5rem',
+	})
 	return <div style={ style.main }>
 		<MenuBar />
-		<h1 style={ style.title }>Messenger</h1>
+		<MediaQuery minDeviceWidth={500}>
+			{ (matches) => <h1 style={ titleStyles(matches) }>Messenger</h1> }
+		</MediaQuery>
+
 		<SearchCardContainer style={{ width: cardWidth, maxWidth: cardMaxWidth }} />
 		<ConversationsListContainer cardStyle={{ width: cardWidth, maxWidth: cardMaxWidth }} />
 	</div>

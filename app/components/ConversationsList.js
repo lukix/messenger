@@ -3,7 +3,10 @@ import ConversationCard from './ConversationCard'
 
 const style = {
 	main: {
-		
+		display: 'flex',
+		alignItems: 'center',
+		flexDirection: 'column',
+		width: '100%',
 	},
 }
 export default function ConversationsList({

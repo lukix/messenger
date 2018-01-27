@@ -1,6 +1,7 @@
 import React from 'react'
 import Colors from '../others/Colors'
 import MediaQuery from 'react-responsive'
+import KeysBox from './menuBoxes/KeysBox'
 
 const style = {
 	main: {
@@ -55,12 +56,12 @@ const style = {
 		background: Colors.semitransparentDark,
 		color: Colors.textLight,
 		position: 'absolute',
+		zIndex: 2,
 		top: '60px',
 		left: '-10px',
 		right: '20px',
-		height: '200px',
 		textAlign: 'left',
-		padding: '10px',
+		padding: '15px',
 		boxSizing: 'border-box',
 	},
 	arrow: (size) => ({
@@ -77,6 +78,7 @@ export default class MenuBar extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			keys: props.keys,
 			selectedItem: null,
 		}
 		this.handleItemClick = this.handleItemClick.bind(this)
@@ -89,11 +91,16 @@ export default class MenuBar extends React.Component {
 		}
 	}
 	render() {
-		const { selectedItem } = this.state
+		const { keys, selectedItem } = this.state
 		const menuItems = [
 			{ label: 'My Keys', icon: 'fa-key' },
 			{ label: 'Contacts', icon: 'fa-user' },
 			{ label: 'Settings', icon: 'fa-cog' },
+		]
+		const menuBoxes = [
+			<KeysBox keys={ keys } />,
+			<div>Contacts:</div>,
+			<div>Settings:</div>,
 		]
 		return <div style={ style.main }>
 			<div style={ style.menuItemsListContainer }>
@@ -120,7 +127,11 @@ export default class MenuBar extends React.Component {
 						)
 					}
 				</ul>
-				{ selectedItem !== null ? <div style={ style.dropdown }>Lorem ipsum</div> : '' }
+				{
+					selectedItem !== null
+						? <div style={ style.dropdown }>{menuBoxes[selectedItem]}</div>
+						: ''
+				}
 			</div>
 			<div style={ style.notifications }>
 				<i className="fa fa-bell" aria-hidden="true"></i>

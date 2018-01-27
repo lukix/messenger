@@ -1,7 +1,7 @@
 import React from 'react'
 import MediaQuery from 'react-responsive'
 import Colors from '../others/Colors'
-import MenuBar from './MenuBar'
+import MenuBarContainer from '../containers/MenuBarContainer'
 import SearchCardContainer from '../containers/SearchCardContainer'
 import ConversationsListContainer from '../containers/ConversationsListContainer'
 
@@ -47,7 +47,7 @@ export default function App() {
 		fontSize: matches ? '5rem' : '3.5rem',
 	})
 	return <div style={ style.main }>
-		<MenuBar />
+		<MenuBarContainer />
 		<MediaQuery minDeviceWidth={500}>
 			{ (matches) => <h1 style={ titleStyles(matches) }>Messenger</h1> }
 		</MediaQuery>

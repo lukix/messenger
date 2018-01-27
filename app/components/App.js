@@ -42,7 +42,7 @@ export default function App() {
 	const cardWidth = '600px'
 	const cardMaxWidth = 'calc(100% - 60px)'
 	return <div style={ style.main }>
-		<MenuBar menuItems={[ 'My Keys', 'Contacts', 'Settings' ]} />
+		<MenuBar />
 		<h1 style={ style.title }>Messenger</h1>
 		<SearchCardContainer style={{ width: cardWidth, maxWidth: cardMaxWidth }} />
 		<ConversationsListContainer cardStyle={{ width: cardWidth, maxWidth: cardMaxWidth }} />

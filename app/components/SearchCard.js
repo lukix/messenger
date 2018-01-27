@@ -16,6 +16,7 @@ const style = {
 	},
 	button: {
 		...SharedStyles.button,
+		minWidth: '40px',
 	},
 	autosuggestWrapper: {
 		flex: '1',
@@ -139,7 +140,7 @@ export default class SearchCard extends React.Component {
 		return <Card style={{ ...style.main, ...customStyle }}>
 			<div style={ style.searchPanel }>
 				<button style={ style.button }>
-					<i className="fa fa-address-book-o" aria-hidden="true"></i>
+					<i className="fa fa-user" aria-hidden="true"></i>
 				</button>
 				<div style={ style.autosuggestWrapper }>
 					<Autosuggest

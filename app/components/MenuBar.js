@@ -37,17 +37,26 @@ const style = {
 	},
 }
 
-export default function MenuBar({ menuItems }) {
+export default function MenuBar() {
+	const menuItems = [
+		{ label: 'My Keys', icon: 'fa-key' },
+		{ label: 'Contacts', icon: 'fa-user' },
+		{ label: 'Settings', icon: 'fa-cog' },
+	]
 	return <div style={ style.main }>
 		<ul style={ style.menuItemsList }>
 			{
 				menuItems.map((item, index) =>
-					<li key={ index } style={ style.menuItem }>{ item }</li>
+					<li key={ index } style={ style.menuItem }>
+						{ <i className={`fa ${item.icon}`} aria-hidden="true"></i> }
+						{' '}{ item.label }
+					</li>
 				)
 			}
 		</ul>
 		<div style={ style.notifications }>
-			Notifications (2)
+			<i className="fa fa-bell" aria-hidden="true"></i>
+			{ ' Notifications' }
 		</div>
 	</div>
 }

@@ -1,3 +1,4 @@
 export const ADD_CONVERSATION = 'ADD_CONVERSATION'
 export const SEND_MESSAGE = 'SEND_MESSAGE'
 export const CHANGE_PIN_STATE = 'CHANGE_PIN_STATE'
+export const ADD_NEW_KEY = 'ADD_NEW_KEY'

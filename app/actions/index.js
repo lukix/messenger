@@ -1,4 +1,9 @@
-import { ADD_CONVERSATION, SEND_MESSAGE, CHANGE_PIN_STATE } from '../actionTypes/index'
+import {
+	ADD_CONVERSATION,
+	SEND_MESSAGE,
+	CHANGE_PIN_STATE,
+	ADD_NEW_KEY,
+} from '../actionTypes/index'
 
 export const addConversationAction = (publicKey) => ({
 	type: ADD_CONVERSATION,
@@ -14,3 +19,14 @@ export const changePinStateAction = (publicKey, pinned) => ({
 	publicKey,
 	pinned,
 })
+export const addNewKeyAction = (privateKey, publicKey) => ({
+	type: ADD_NEW_KEY,
+	privateKey,
+	publicKey,
+})
+export const createNewKeyAction = () => {	//TODO
+	return function (dispatch) {
+		//dispatch() //Creating key started
+		console.warn('createNewKeyAction is not implemented')
+	}
+}

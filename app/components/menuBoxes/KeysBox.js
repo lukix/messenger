@@ -23,10 +23,11 @@ const style = {
 		width: '100%',
 	},
 }
-export default function KeysBox({ style: customStyle, keys }) {
+const transformPEMtoKeyString = (pemString) => pemString.split('\n').slice(1, -1).join('')
+export default function KeysBox({ style: customStyle, keys, createNewKey }) {
 	const listItems = keys.map(
 		(pair, index) => <li key={index}>
-			<div style={ style.publicKey }>{ pair.publicKey }</div>
+			<div style={ style.publicKey }>{ transformPEMtoKeyString(pair.publicKey) }</div>
 		</li>
 	)
 	const keysList = <div>
@@ -37,7 +38,7 @@ export default function KeysBox({ style: customStyle, keys }) {
 	</div>
 	return <div style={{ ...style.main, ...customStyle }}>
 		<div style={{ textAlign: 'center' }}>
-			<button style={ style.button }>
+			<button style={ style.button } onClick={ createNewKey }>
 				{ 'Request a new key' }
 			</button>
 		</div>

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import MenuBar from './../components/MenuBar'
-import {} from '../actions/index'
+import { createNewKeyAction } from '../actions/index'
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -11,8 +11,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		onNewKeyRequested: () => {
-			//dispatch()
+		createNewKey: () => {
+			dispatch(createNewKeyAction())
 		},
 	}
 }

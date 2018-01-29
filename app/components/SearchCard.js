@@ -40,13 +40,9 @@ export default class SearchCard extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			customStyle: props.style,
 			value: '',
 			suggestions: [],
-			contacts: props.contacts,
 			searchResult: null,
-			onMessageSend: props.onMessageSend,
-			onPinStateChange: props.onPinStateChange,
 		}
 		this.search = this.search.bind(this)
 		this.messageSendHandler = this.messageSendHandler.bind(this)
@@ -59,11 +55,11 @@ export default class SearchCard extends React.Component {
 	search(searchText) {
 		const isValidKey = searchText.length === 26
 		if(isValidKey) {
-			const isExistingContact = this.state.contacts
+			const isExistingContact = this.props.contacts
 				.map(({ publicKey }) => publicKey)
 				.includes(searchText)
 			if(isExistingContact) {
-				this.state.onPinStateChange(searchText, true)
+				this.props.onPinStateChange(searchText, true)
 				this.resetSearchResults()
 			} else {
 				this.setState({
@@ -71,12 +67,12 @@ export default class SearchCard extends React.Component {
 				})
 			}
 		} else {
-			const matchingContacts = this.state.contacts.filter(function hasSameBegining(contact) {
+			const matchingContacts = this.props.contacts.filter(function hasSameBegining(contact) {
 				return contact.name.substr(0, searchText.length) === searchText
 			})
 			const exactResult = matchingContacts.find(contact => contact.name === searchText)
 			if(exactResult !== null) {
-				this.state.onPinStateChange(exactResult.publicKey, true)
+				this.props.onPinStateChange(exactResult.publicKey, true)
 				this.resetSearchResults()
 			} else {
 				this.setState({
@@ -90,7 +86,7 @@ export default class SearchCard extends React.Component {
 	}
 	messageSendHandler(publicKey, message) {
 		this.resetSearchResults()
-		this.state.onMessageSend(publicKey, message)
+		this.props.onMessageSend(publicKey, message)
 	}
 	onChange(event, { newValue }) {
 		this.setState({
@@ -106,7 +102,7 @@ export default class SearchCard extends React.Component {
 		this.search(this.state.value)
 	}
 	onSuggestionsFetchRequested({ value }) {
-		const { contacts } = this.state
+		const { contacts } = this.props
 		this.setState({
 			suggestions: getSuggestions(value, contacts),
 		})
@@ -117,7 +113,8 @@ export default class SearchCard extends React.Component {
 		})
 	}
 	render() {
-		const { customStyle, value, suggestions, searchResult } = this.state
+		const { value, suggestions, searchResult } = this.state
+		const { style: customStyle } = this.props
 		const inputProps = {
 			placeholder: 'Type public key or name',
 			value,

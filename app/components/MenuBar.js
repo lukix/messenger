@@ -78,14 +78,9 @@ export default class MenuBar extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			keys: props.keys,
-			createNewKey: props.createNewKey,
 			selectedItem: null,
 		}
 		this.handleItemClick = this.handleItemClick.bind(this)
-	}
-	componentWillReceiveProps(props) {
-		this.setState(props)
 	}
 	handleItemClick(itemIndex) {
 		return () => {
@@ -95,7 +90,8 @@ export default class MenuBar extends React.Component {
 		}
 	}
 	render() {
-		const { keys, createNewKey, selectedItem } = this.state
+		const { selectedItem } = this.state
+		const { keys, createNewKey } = this.props
 		const menuItems = [
 			{ label: 'My Keys', icon: 'fa-key' },
 			{ label: 'Contacts', icon: 'fa-user' },

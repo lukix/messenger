@@ -26,8 +26,9 @@ const style = {
 export default class MessageSendPanel extends React.Component {
 	constructor(props) {
 		super(props)
-		const { style: customStyle, onMessageSend } = props
-		this.state = { customStyle, onMessageSend, messageText: '' }
+		this.state = {
+			messageText: '',
+		}
 		this.onChange = this.onChange.bind(this)
 		this.keyPressHandler = this.keyPressHandler.bind(this)
 		this.messageSendHandler = this.messageSendHandler.bind(this)
@@ -36,7 +37,7 @@ export default class MessageSendPanel extends React.Component {
 		this.setState({ messageText: event.target.value })
 	}
 	messageSendHandler() {
-		this.state.onMessageSend(this.state.messageText)
+		this.props.onMessageSend(this.state.messageText)
 		this.setState({ messageText: '' })
 	}
 	keyPressHandler(event) {
@@ -46,7 +47,8 @@ export default class MessageSendPanel extends React.Component {
 		}
 	}
 	render() {
-		const { customStyle, messageText } = this.state
+		const { messageText } = this.state
+		const { style: customStyle } = this.props
 		return <div style={{ ...style.main, ...customStyle }}>
 			<TextareaAutosize
 				style={ style.textarea }

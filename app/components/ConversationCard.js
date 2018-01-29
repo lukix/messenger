@@ -31,10 +31,6 @@ export default class ConversationCard extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			customStyle: props.style,
-			conversation: props.conversation,
-			onMessageSend: props.onMessageSend,
-			onPinStateChange: props.onPinStateChange,
 			scrollToBottomFlag: false,
 		}
 		this.messageSendHandler = this.messageSendHandler.bind(this)
@@ -49,21 +45,18 @@ export default class ConversationCard extends React.Component {
 			this.setState({ scrollToBottomFlag: false })
 		}
 	}
-	componentWillReceiveProps(props) {
-		this.setState({ ...props })
-	}
 	messageSendHandler(message) {
-		this.state.onMessageSend(this.state.conversation.publicKey, message)
+		this.props.onMessageSend(this.props.conversation.publicKey, message)
 		this.setState({ scrollToBottomFlag: true })
 	}
 	pinStateChangeHandler() {
-		this.state.onPinStateChange(
-			this.state.conversation.publicKey,
-			!this.state.conversation.pinned
+		this.props.onPinStateChange(
+			this.props.conversation.publicKey,
+			!this.props.conversation.pinned
 		)
 	}
 	render() {
-		const { customStyle, conversation } = this.state
+		const { style: customStyle, conversation } = this.props
 		const { name: contactName, publicKey: contactKey, messages, pinned } = conversation
 		const conversationName = contactName ? contactName : contactKey
 		const pinnedStateStyle = { filter: pinned ? 'grayscale(0%)' : 'grayscale(100%)' }

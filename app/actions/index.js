@@ -1,3 +1,5 @@
+import webworkify from 'webworkify'
+import KeyGeneratorWorker from '../others/keyGeneratorWorker'
 import {
 	ADD_CONVERSATION,
 	SEND_MESSAGE,
@@ -24,9 +26,13 @@ export const addNewKeyAction = (privateKey, publicKey) => ({
 	privateKey,
 	publicKey,
 })
-export const createNewKeyAction = () => {	//TODO
+export const createNewKeyAction = () => {
 	return function (dispatch) {
 		//dispatch() //Creating key started
-		console.warn('createNewKeyAction is not implemented')
+		const worker = webworkify(KeyGeneratorWorker)
+		worker.addEventListener('message', function (event) {
+			const { publicKey, privateKey } = event.data
+			dispatch(addNewKeyAction(privateKey, publicKey))
+		})
 	}
 }

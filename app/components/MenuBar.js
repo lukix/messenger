@@ -91,14 +91,18 @@ export default class MenuBar extends React.Component {
 	}
 	render() {
 		const { selectedItem } = this.state
-		const { keys, createNewKey } = this.props
+		const { keys, createNewKey, keyRequestInProgress } = this.props
 		const menuItems = [
 			{ label: 'My Keys', icon: 'fa-key' },
 			{ label: 'Contacts', icon: 'fa-user' },
 			{ label: 'Settings', icon: 'fa-cog' },
 		]
 		const menuBoxes = [
-			<KeysBox keys={ keys } createNewKey={ createNewKey } />,
+			<KeysBox
+				keys={ keys }
+				createNewKey={ createNewKey }
+				keyRequestInProgress={ keyRequestInProgress }
+			/>,
 			<div>Contacts:</div>,
 			<div>Settings:</div>,
 		]

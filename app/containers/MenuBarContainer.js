@@ -6,6 +6,7 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		...ownProps,
 		keys: state.keys,
+		keyRequestInProgress: state.others.keyRequestInProgress,
 	}
 }
 

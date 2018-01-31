@@ -49,6 +49,9 @@ const sampleConversations = [
 		notifications: [],
 		conversations: sampleConversations,
 		settings: {},
+		others: {
+			keyRequestInProgress: false,
+		},
 	}
 	const initialState = readStateFromLocalStorage(localStorageObjectName) || defaultEmptyState
 	const store = createStore(mainReducer, initialState, applyMiddleware(thunkMiddleware))

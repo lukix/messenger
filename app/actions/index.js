@@ -5,6 +5,8 @@ import {
 	SEND_MESSAGE,
 	CHANGE_PIN_STATE,
 	ADD_NEW_KEY,
+	START_CREATING_NEW_KEY,
+	FINISH_CREATING_NEW_KEY,
 } from '../actionTypes/index'
 
 export const addConversationAction = (publicKey) => ({
@@ -26,13 +28,20 @@ export const addNewKeyAction = (privateKey, publicKey) => ({
 	privateKey,
 	publicKey,
 })
+export const startCreatingNewKey = () => ({
+	type: START_CREATING_NEW_KEY,
+})
+export const finishCreatingNewKey = () => ({
+	type: FINISH_CREATING_NEW_KEY,
+})
 export const createNewKeyAction = () => {
 	return function (dispatch) {
-		//dispatch() //Creating key started
+		dispatch(startCreatingNewKey()) //Creating key started
 		const worker = webworkify(KeyGeneratorWorker)
 		worker.addEventListener('message', function (event) {
 			const { publicKey, privateKey } = event.data
 			dispatch(addNewKeyAction(privateKey, publicKey))
+			dispatch(finishCreatingNewKey())
 		})
 	}
 }

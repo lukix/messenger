@@ -53,6 +53,7 @@ function bundleApp() {
 				'transform-react-jsx',
 				'transform-object-rest-spread',
 				'transform-class-properties',
+				'emotion',
 			],
 		})
 		.bundle()

@@ -4,5 +4,5 @@ export default {
 	textDark: '#525252',
 	textLight: '#ffffff',
 	shadow: 'rgba(137,137,137,0.5)',
-	semitransparentDark: 'rgba(0, 0, 0, 0.6)',
+	semitransparentDark: 'rgba(0, 0, 0, 0.75)',
 }

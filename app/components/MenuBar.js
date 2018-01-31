@@ -55,14 +55,22 @@ const style = {
 	dropdown: {
 		background: Colors.semitransparentDark,
 		color: Colors.textLight,
-		position: 'absolute',
 		zIndex: 2,
-		top: '60px',
-		left: '-10px',
-		right: '20px',
 		textAlign: 'left',
 		padding: '15px',
 		boxSizing: 'border-box',
+	},
+	dropdownNormal: {
+		position: 'absolute',
+		top: '60px',
+		left: '-10px',
+		right: '20px',
+	},
+	dropdownMobile: {
+		position: 'absolute',
+		top: '60px',
+		left: '-10px',
+		width: 'calc(100vw - 20px)',
 	},
 	arrow: (size) => ({
 		width: 0,
@@ -106,6 +114,10 @@ export default class MenuBar extends React.Component {
 			<div>Contacts:</div>,
 			<div>Settings:</div>,
 		]
+		const dropdownStyle = (mobile) => ({
+			...style.dropdown,
+			...(mobile ? style.dropdownMobile : style.dropdownNormal),
+		})
 		return <div style={ style.main }>
 			<div style={ style.menuItemsListContainer }>
 				<ul style={ style.menuItemsList }>
@@ -132,9 +144,13 @@ export default class MenuBar extends React.Component {
 					}
 				</ul>
 				{
-					selectedItem !== null
-						? <div style={ style.dropdown }>{menuBoxes[selectedItem]}</div>
-						: ''
+					selectedItem === null
+						? ''
+						: <MediaQuery minDeviceWidth={500}>
+							{ (matches) => <div style={ dropdownStyle(!matches) }>
+								{ menuBoxes[selectedItem] }
+							</div> }
+						</MediaQuery>
 				}
 			</div>
 			<div style={ style.notifications }>

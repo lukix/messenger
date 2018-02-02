@@ -31,8 +31,10 @@ export function decryptMessage(recieverPrivateKey, encryptedMessage) {
 		crypto2.decrypt.aes256cbc(encryptedMessage.message, password, (err, decrypted) => {
 			if(err) reject(err)
 			const message = JSON.parse(decrypted)
-			const verified = new NodeRSA(message.publicKey).verify(password, message.signature)
+			const verified = new NodeRSA(message.publicKey)
+				.verify(password, encryptedMessage.signature)
 			resolve({
+				senderAddress: message.publicKey,
 				content: message.content,
 				verified,
 			})

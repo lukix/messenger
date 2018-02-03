@@ -22,7 +22,7 @@ const sampleConversations = [
 			{ text: 'nulla vulputate dolor', date: new Date('2018-01-23 19:59:48'), isYours: true },
 			{ text: 'Vestibulum an primis', date: new Date('2018-01-23 20:00:41'), isYours: true },
 			{ text: 'rutrum ', date: new Date('2018-01-23 20:01:13'), isYours: false },
-		],
+		].map(message => ({ ...message, synced: true })),
 		pinned: false,
 	},
 	{
@@ -33,7 +33,7 @@ const sampleConversations = [
 			{ text: 'Hullo', date: new Date('2018-01-22 20:23:24'), isYours: true },
 			{ text: 'Whats up', date: new Date('2018-01-22 20:23:32'), isYours: true },
 			{ text: 'Nothing. Bye.', date: new Date('2018-01-22 20:25:17'), isYours: false },
-		],
+		].map(message => ({ ...message, synced: true })),
 		pinned: true,
 	},
 ];

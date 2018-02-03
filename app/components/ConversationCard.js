@@ -62,7 +62,9 @@ export default class ConversationCard extends React.Component {
 		const pinnedStateStyle = { filter: pinned ? 'grayscale(0%)' : 'grayscale(100%)' }
 		const messagesList = messages.map(
 			(message, index) =>
-				<Message key={ index } left={ !message.isYours }>{ message.text }</Message>
+				<Message key={ index } left={ !message.isYours } synced={ message.synced }>
+					{ message.text }
+				</Message>
 		)
 		const scrollbarProps = {
 			autoHide: true,

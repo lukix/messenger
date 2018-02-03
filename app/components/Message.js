@@ -18,11 +18,11 @@ const style = {
 		display: 'inline-block',
 	},
 }
-export default function Message({ style: customStyle, children, left }) {
+export default function Message({ style: customStyle, children, left, synced }) {
 	const justifyContent = left ? 'flex-start' : 'flex-end'
 	const borderRadius = left ? { borderTopLeftRadius: '0px' } : { borderTopRightRadius: '0px' }
 	return <div style={{ ...style.main, justifyContent, ...customStyle }}>
-		<div style={{ ...style.inner, ...borderRadius }}>
+		<div style={{ ...style.inner, ...borderRadius, opacity: synced ? 1 : 0.7 }}>
 			{ children }
 		</div>
 	</div>

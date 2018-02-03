@@ -34,12 +34,11 @@ const style = {
 		right: 0,
 	},
 }
-const transformPEMtoKeyString = (pemString) => pemString.split('\n').slice(1, -1).join('')
 export default function KeysBox({ style: customStyle, keys, createNewKey, keyRequestInProgress }) {
 	const cursorType = keyRequestInProgress ? 'not-allowed' : 'pointer'
 	const listItems = keys.map(
 		(pair, index) => <li key={index}>
-			<div style={ style.publicKey }>{ transformPEMtoKeyString(pair.publicKey) }</div>
+			<div style={ style.publicKey }>{ pair.publicKey }</div>
 		</li>
 	)
 	const keysList = <div>

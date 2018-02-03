@@ -12,8 +12,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		onMessageSend: (publicKey, message) => {
-			dispatch(sendMessageAction(publicKey, message))
+		onMessageSend: (publicKey, keysPair, message) => {
+			dispatch(sendMessageAction(publicKey, keysPair, message))
 		},
 		onPinStateChange: (publicKey, pinned) => {
 			dispatch(changePinStateAction(publicKey, pinned))

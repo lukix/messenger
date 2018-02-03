@@ -46,7 +46,8 @@ export default class ConversationCard extends React.Component {
 		}
 	}
 	messageSendHandler(message) {
-		this.props.onMessageSend(this.props.conversation.publicKey, message)
+		const { publicKey, keysPair } = this.props.conversation
+		this.props.onMessageSend(publicKey, keysPair, message)
 		this.setState({ scrollToBottomFlag: true })
 	}
 	pinStateChangeHandler() {

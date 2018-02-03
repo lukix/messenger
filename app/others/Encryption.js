@@ -16,9 +16,9 @@ export function encryptMessage(recieverPublicKey, senderKeys, messageContent) {
 			const encryptedPassword = publicKey.encrypt(password)
 			resolve({
 				recieverAddress: recieverPublicKey,
-				encryptedPassword,
+				encryptedPassword: encryptedPassword.toString(),
 				message: encrypted,
-				signature: privateKey.sign(password),
+				signature: privateKey.sign(password).toString(),
 			})
 		})
 	})

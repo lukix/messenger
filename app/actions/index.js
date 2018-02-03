@@ -1,22 +1,21 @@
 import webworkify from 'webworkify'
 import KeyGeneratorWorker from '../others/keyGeneratorWorker'
-import {
+import axios from '../others/axiosInstance'
+import { encryptMessage } from '../others/Encryption'
+import uuid from 'uuid/v1'
+import { 
 	ADD_CONVERSATION,
-	SEND_MESSAGE,
 	CHANGE_PIN_STATE,
 	ADD_NEW_KEY,
 	START_CREATING_NEW_KEY,
 	FINISH_CREATING_NEW_KEY,
+	START_SENDING_MESSAGE,
+	FINISH_SENDING_MESSAGE,
 } from '../actionTypes/index'
 
 export const addConversationAction = (publicKey) => ({
 	type: ADD_CONVERSATION,
 	publicKey,
-})
-export const sendMessageAction = (publicKey, message) => ({
-	type: SEND_MESSAGE,
-	publicKey,
-	message,
 })
 export const changePinStateAction = (publicKey, pinned) => ({
 	type: CHANGE_PIN_STATE,
@@ -34,6 +33,17 @@ export const startCreatingNewKey = () => ({
 export const finishCreatingNewKey = () => ({
 	type: FINISH_CREATING_NEW_KEY,
 })
+export const startSendingMessage = (publicKey, messageContent, id) => ({
+	type: START_SENDING_MESSAGE,
+	publicKey,
+	messageContent,
+	id,
+})
+export const finishSendingMessage = (publicKey, id) => ({
+	type: FINISH_SENDING_MESSAGE,
+	publicKey,
+	id,
+})
 export const createNewKeyAction = () => {
 	return function (dispatch) {
 		dispatch(startCreatingNewKey()) //Creating key started
@@ -43,5 +53,20 @@ export const createNewKeyAction = () => {
 			dispatch(addNewKeyAction(privateKey, publicKey))
 			dispatch(finishCreatingNewKey())
 		})
+	}
+}
+export const sendMessageAction = (recieverPublicKey, senderKeys, messageContent) => {
+	return function (dispatch) {
+		const messageId = uuid()
+		dispatch(startSendingMessage(recieverPublicKey, messageContent, messageId))
+		return encryptMessage(recieverPublicKey, senderKeys, messageContent)
+			.then(encryptedMessage => axios.post('/messages', encryptedMessage))
+			.then(res => {
+				dispatch(finishSendingMessage(recieverPublicKey, messageId))
+			})
+			.catch(error => {
+				console.log(error)
+				//TODO: dispatch error action
+			})
 	}
 }

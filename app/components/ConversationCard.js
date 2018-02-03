@@ -15,6 +15,11 @@ const style = {
 		fontWeight: 'bold',
 		fontSize: '1.1rem',
 	},
+	conversationName: {
+		textOverflow: 'ellipsis',
+		whiteSpace: 'nowrap',
+		overflow: 'hidden',
+	},
 	pin: {
 		height: '24px',
 		cursor: 'pointer',
@@ -76,7 +81,7 @@ export default class ConversationCard extends React.Component {
 		}
 		return <Card style={{ ...style.main, ...customStyle }}>
 			<header style={ style.header }>
-				<div>{ conversationName }</div>
+				<div style={ style.conversationName }>{ conversationName }</div>
 				<div>
 					<img
 						src="./img/pin.png"

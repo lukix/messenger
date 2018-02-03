@@ -7,11 +7,16 @@ const style = {
 	resultText: {
 		fontWeight: 'bold',
 	},
+	listItem: {
+		textOverflow: 'ellipsis',
+		whiteSpace: 'nowrap',
+		overflow: 'hidden',
+	},
 }
 const contactToString = ({ name, publicKey }) => `${name} (${publicKey})`
 export default function MatchingContacts({ style: customStyle, contacts, searchText }) {
-	const contactListElements = contacts.map(
-		(contact, index) => <li key={index}>{ contactToString(contact) }</li>
+	const contactListElements = contacts.map((contact, index) =>
+		<li key={index} style={ style.listItem }>{ contactToString(contact) }</li>
 	)
 	const listDisplayMode = contacts.length > 0 ? 'block' : 'none'
 	const resultText = contacts.length > 0

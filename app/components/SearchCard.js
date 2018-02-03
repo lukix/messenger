@@ -68,10 +68,12 @@ export default class SearchCard extends React.Component {
 			}
 		} else {
 			const matchingContacts = this.props.contacts.filter(function hasSameBegining(contact) {
-				return contact.name.substr(0, searchText.length) === searchText
+				const str1 = contact.name.substr(0, searchText.length).toLowerCase()
+				const str2 = searchText.toLowerCase()
+				return str1 === str2
 			})
 			const exactResult = matchingContacts.find(contact => contact.name === searchText)
-			if(exactResult !== null) {
+			if(exactResult !== undefined) {
 				this.props.onPinStateChange(exactResult.publicKey, true)
 				this.resetSearchResults()
 			} else {

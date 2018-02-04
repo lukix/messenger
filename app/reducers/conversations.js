@@ -1,12 +1,14 @@
 import {
 	START_SENDING_MESSAGE,
 	FINISH_SENDING_MESSAGE,
-	ADD_CONVERSATION,
+	START_ADDING_CONVERSATION,
+	FINISH_ADDING_CONVERSATION,
 	CHANGE_PIN_STATE,
 } from '../actionTypes/index'
 
-const createConversation = (publicKey) => ({
+const createConversation = (publicKey, keysPair) => ({
 	publicKey,
+	keysPair,
 	name: '',
 	messages: [],
 	pinned: true,
@@ -33,8 +35,14 @@ const syncMessageInConversation = (conversation, messageId) => ({
 })
 const conversationsReducer = (conversations = [], action) => {
 	switch(action.type) {
-		case ADD_CONVERSATION:
-			return [createConversation(action.publicKey), ...conversations]
+		case START_ADDING_CONVERSATION:
+			return [createConversation(action.publicKey, null), ...conversations]
+		case FINISH_ADDING_CONVERSATION:
+			return conversations.map(conversation =>
+				conversation.publicKey === action.publicKey
+					? createConversation(action.publicKey, action.keysPair)
+					: conversation
+			)
 		case START_SENDING_MESSAGE:
 			return conversations.map((conversation) => {
 				return conversation.publicKey === action.publicKey

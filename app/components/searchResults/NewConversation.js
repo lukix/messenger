@@ -4,6 +4,9 @@ import MessageSendPanel from '../MessageSendPanel'
 const style = {
 	main: {
 		paddingTop: '15px',
+		textOverflow: 'ellipsis',
+		whiteSpace: 'nowrap',
+		overflow: 'hidden',
 	},
 }
 export default class NewConversation extends React.Component {

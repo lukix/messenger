@@ -17,8 +17,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		onMessageSend: (publicKey, message) => {
-			console.warn('not implemented')
-			//dispatch(addConversationAction(publicKey))
+			dispatch(addConversationAction(publicKey))
 			//dispatch(sendMessageAction(publicKey, message))
 		},
 		onPinStateChange: (publicKey, pinned) => {

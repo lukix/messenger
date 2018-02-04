@@ -4,19 +4,34 @@ import axios from '../others/axiosInstance'
 import { encryptMessage } from '../others/Encryption'
 import uuid from 'uuid/v1'
 import { 
-	ADD_CONVERSATION,
 	CHANGE_PIN_STATE,
 	ADD_NEW_KEY,
 	START_CREATING_NEW_KEY,
 	FINISH_CREATING_NEW_KEY,
 	START_SENDING_MESSAGE,
 	FINISH_SENDING_MESSAGE,
+	START_ADDING_CONVERSATION,
+	FINISH_ADDING_CONVERSATION,
 } from '../actionTypes/index'
-
-export const addConversationAction = (publicKey) => ({
-	type: ADD_CONVERSATION,
+export const startCreatingNewConversation = (publicKey) => ({
+	type: START_ADDING_CONVERSATION,
 	publicKey,
 })
+export const finishCreatingNewConversation = (publicKey, keysPair) => ({
+	type: FINISH_ADDING_CONVERSATION,
+	publicKey,
+	keysPair,
+})
+export const addConversationAction = (publicKey) => {
+	return function (dispatch) {
+		dispatch(startCreatingNewConversation(publicKey))
+		const worker = webworkify(KeyGeneratorWorker)
+		worker.addEventListener('message', function (event) {
+			dispatch(finishCreatingNewConversation(publicKey, event.data))
+		})
+	}
+}
+
 export const changePinStateAction = (publicKey, pinned) => ({
 	type: CHANGE_PIN_STATE,
 	publicKey,

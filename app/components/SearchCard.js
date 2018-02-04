@@ -53,7 +53,7 @@ export default class SearchCard extends React.Component {
 		this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
 	}
 	search(searchText) {
-		const isValidKey = searchText.length === 26
+		const isValidKey = searchText.length === 392
 		if(isValidKey) {
 			const isExistingContact = this.props.contacts
 				.map(({ publicKey }) => publicKey)

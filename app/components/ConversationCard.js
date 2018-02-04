@@ -63,7 +63,8 @@ export default class ConversationCard extends React.Component {
 	}
 	render() {
 		const { style: customStyle, conversation } = this.props
-		const { name: contactName, publicKey: contactKey, messages, pinned } = conversation
+		const { name: contactName, publicKey: contactKey, messages, pinned, 
+			keysPair } = conversation
 		const conversationName = contactName ? contactName : contactKey
 		const pinnedStateStyle = { filter: pinned ? 'grayscale(0%)' : 'grayscale(100%)' }
 		const messagesList = messages.map(
@@ -79,7 +80,8 @@ export default class ConversationCard extends React.Component {
 			autoHeightMin: 100,
 			autoHeightMax: 300,
 		}
-		return <Card style={{ ...style.main, ...customStyle }}>
+		const opacity = keysPair === null ? 0.75 : 1
+		return <Card style={{ ...style.main, opacity,  ...customStyle }}>
 			<header style={ style.header }>
 				<div style={ style.conversationName }>{ conversationName }</div>
 				<div>

@@ -3,10 +3,18 @@ import Card from './Card'
 import SharedStyles from '../others/SharedStyles'
 import Message from './Message'
 import { Scrollbars } from 'react-custom-scrollbars'
+import { PulseLoader } from 'react-spinners'
 import MessageSendPanel from './MessageSendPanel'
+import Colors from '../others/Colors'
 
 const style = {
 	main: {},
+	loadingCard: {
+		opacity: 1,
+		textAlign: 'center',
+		fontSize: '1.5rem',
+		fontWeight: 'bold',
+	},
 	header: {
 		display: 'flex',
 		flexDirection: 'row',
@@ -42,11 +50,11 @@ export default class ConversationCard extends React.Component {
 		this.pinStateChangeHandler = this.pinStateChangeHandler.bind(this)
 	}
 	componentDidMount() {
-		this.refs.scrollbars.scrollToBottom()
+		if(this.refs.scrollbars) this.refs.scrollbars.scrollToBottom()
 	}
 	componentDidUpdate() {
 		if(this.state.scrollToBottomFlag) {
-			this.refs.scrollbars.scrollToBottom()
+			if(this.refs.scrollbars) this.refs.scrollbars.scrollToBottom()
 			this.setState({ scrollToBottomFlag: false })
 		}
 	}
@@ -80,8 +88,17 @@ export default class ConversationCard extends React.Component {
 			autoHeightMin: 100,
 			autoHeightMax: 300,
 		}
-		const opacity = keysPair === null ? 0.75 : 1
-		return <Card style={{ ...style.main, opacity,  ...customStyle }}>
+		const loadingCard = <Card style={{ ...style.main, ...style.loadingCard, ...customStyle }}>
+			<p style={{ margin: '0 0 20px 0' }}>
+				Creating keys for conversation...
+			</p>
+			<PulseLoader
+				color={ Colors.mainDark }
+				size={ 20 }
+				loading={ true }
+			/>
+		</Card>
+		const normalCard = <Card style={{ ...style.main, ...customStyle }}>
 			<header style={ style.header }>
 				<div style={ style.conversationName }>{ conversationName }</div>
 				<div>
@@ -102,5 +119,6 @@ export default class ConversationCard extends React.Component {
 			</div>
 			<MessageSendPanel onMessageSend={ this.messageSendHandler } />
 		</Card>
+		return keysPair === null ? loadingCard : normalCard
 	}
 }

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import SearchCard from './../components/SearchCard'
-import { addConversationAction, sendMessageAction, changePinStateAction } from '../actions/index'
+import { addConversationAndSendMessageAction, changePinStateAction } from '../actions/index'
 
 const extractContacts = function (conversations) {
 	return conversations.map(function convertConversationToContact({ name, publicKey }) {
@@ -17,8 +17,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		onMessageSend: (publicKey, message) => {
-			dispatch(addConversationAction(publicKey))
-			//dispatch(sendMessageAction(publicKey, message))
+			dispatch(addConversationAndSendMessageAction(publicKey, message))
 		},
 		onPinStateChange: (publicKey, pinned) => {
 			dispatch(changePinStateAction(publicKey, pinned))

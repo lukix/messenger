@@ -24,14 +24,23 @@ export const finishCreatingNewConversation = (publicKey, keysPair) => ({
 })
 export const addConversationAction = (publicKey) => {
 	return function (dispatch) {
-		dispatch(startCreatingNewConversation(publicKey))
-		const worker = webworkify(KeyGeneratorWorker)
-		worker.addEventListener('message', function (event) {
-			dispatch(finishCreatingNewConversation(publicKey, event.data))
+		return new Promise((resolve, reject) => {
+			dispatch(startCreatingNewConversation(publicKey))
+			const worker = webworkify(KeyGeneratorWorker)
+			worker.addEventListener('message', function ({ data: keysPair }) {
+				dispatch(finishCreatingNewConversation(publicKey, keysPair))
+				resolve(keysPair)
+			})
 		})
 	}
 }
-
+export const addConversationAndSendMessageAction = (publicKey, message) => {
+	return function (dispatch) {
+		dispatch(addConversationAction(publicKey)).then(keysPair => {
+			dispatch(sendMessageAction(publicKey, keysPair, message))
+		})
+	}
+}
 export const changePinStateAction = (publicKey, pinned) => ({
 	type: CHANGE_PIN_STATE,
 	publicKey,

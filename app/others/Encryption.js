@@ -16,9 +16,9 @@ export function encryptMessage(recieverPublicKey, senderKeys, messageContent) {
 			const encryptedPassword = publicKey.encrypt(password)
 			resolve({
 				recieverAddress: recieverPublicKey,
-				encryptedPassword: encryptedPassword.toString(),
+				encryptedPassword: encryptedPassword,
 				message: encrypted,
-				signature: privateKey.sign(password).toString(),
+				signature: privateKey.sign(password),
 			})
 		})
 	})
@@ -26,7 +26,7 @@ export function encryptMessage(recieverPublicKey, senderKeys, messageContent) {
 
 export function decryptMessage(recieverPrivateKey, encryptedMessage) {
 	const privateKey = new NodeRSA(stringToPem(recieverPrivateKey, 'PRIVATE'))
-	const password = privateKey.decrypt(encryptedMessage.encryptedPassword).toString()
+	const password = privateKey.decrypt(encryptedMessage.encryptedPassword)
 	return new Promise((resolve, reject) => {
 		crypto2.decrypt.aes256cbc(encryptedMessage.message, password, (err, decrypted) => {
 			if(err) reject(err)

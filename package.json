@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently --kill-others --prefix \"[{name}]\" --names \"gulp,http\" \"gulp watch\" \"node server/server.js\"",
-    "server": "node server/server.js"
+    "server": "node server/server.js",
+    "test": "mocha --require babel-core/register"
   },
   "author": "Łukasz Jenczmyk",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "event-stream": "3.3.4",
     "gulp": "3.9.1",
     "gulp-util": "3.0.8",
+    "mocha": "^5.0.0",
     "react-autosize-textarea": "3.0.2",
     "vinyl-source-stream": "2.0.0"
   },
@@ -49,5 +51,8 @@
     "redux-thunk": "2.2.0",
     "uuid": "3.2.1",
     "webworkify": "1.5.0"
+  },
+  "babel": {
+    "presets": ["es2015"]
   }
 }

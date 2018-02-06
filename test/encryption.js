@@ -1,6 +1,7 @@
 import assert from 'assert'
 import { describe, it } from 'mocha'
 import { encryptMessage, decryptMessage } from '../app/others/Encryption.js'
+import { encodeMessage, decodeMessage } from '../app/others/Encoding.js'
 
 const keysPair1 = {
 	publicKey: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAho2eL19+4qSC1qDJthHpJJYO1Hb9Ed41/K29X485WfHdjVip3jhmdBNhPrlheZJhYB3dP5RbxwS9X3vYcpE8TSmbdQ0DBHL05Astg7R/+QQO7YmD/pIhZEgEnceo6K8m6qAK5qZZDDwlbjnaEQ0i9l4ntuYmv53Un5LyYwgZtfz/Z2U0LdpPjtQy9vV2M+2AflCt3uJoYpY3xI0JzUVw/dLj/qck+zSR4Goj0SD57FFan5KKws+CEKOr79CLDa7bOODSkCG9M5lrbGQkENOydBEQfjjvAIqnMz5wyazM1zfBhxzCBEe0xKhSwW8cMIUKOTNCIVnoBdtLpT2sTyiThQIDAQAB', 
@@ -21,6 +22,27 @@ describe('Encryption.js', function () {
 					assert.ok(
 						messageContent === decryptedMessage.content
 						&& decryptedMessage.verified
+					)
+					done()
+				})
+				.catch(error => {
+					done(error)
+				})
+		})
+	})
+	describe('encrypt, stringify, parse, decrypt cycle', function () {
+		it('should return decrypted and verified message', function (done) {
+			const messageContent = 'Hello World345'
+			encryptMessage(keysPair2.publicKey, keysPair1, messageContent)
+				.then(message => encodeMessage(message))
+				.then(message => JSON.stringify(message))
+				.then(message => JSON.parse(message))
+				.then(message => decodeMessage(message))
+				.then(message => decryptMessage(keysPair2.privateKey, message))
+				.then(message => {
+					assert.ok(
+						messageContent === message.content
+						&& message.verified
 					)
 					done()
 				})

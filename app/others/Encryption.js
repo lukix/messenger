@@ -2,9 +2,15 @@ import NodeRSA from 'node-rsa'
 import crypto2 from 'crypto2'
 import randomstring from 'randomstring'
 
+const encryptionOptions = {
+	encryptionScheme: 'pkcs1_oaep',
+	signingScheme: 'pkcs1-sha256',
+}
+const encoding = 'base64'
+
 export function encryptMessage(recieverPublicKey, senderKeys, messageContent) {
-	const publicKey = new NodeRSA(stringToPem(recieverPublicKey, 'PUBLIC'))
-	const privateKey = new NodeRSA(stringToPem(senderKeys.privateKey, 'PRIVATE'))
+	const publicKey = new NodeRSA(stringToPem(recieverPublicKey, 'PUBLIC'), encryptionOptions)
+	const privateKey = new NodeRSA(stringToPem(senderKeys.privateKey, 'PRIVATE'), encryptionOptions)
 	const password = randomstring.generate(128)
 	const messageObject = JSON.stringify({
 		content: messageContent,
@@ -13,30 +19,34 @@ export function encryptMessage(recieverPublicKey, senderKeys, messageContent) {
 	return new Promise((resolve, reject) => {
 		crypto2.encrypt.aes256cbc(messageObject, password, (err, encrypted) => {
 			if(err) reject(err)
-			const encryptedPassword = publicKey.encrypt(password)
+			const encryptedPassword = publicKey.encrypt(password, encoding, encoding)
 			resolve({
 				recieverAddress: recieverPublicKey,
 				encryptedPassword: encryptedPassword,
 				message: encrypted,
-				signature: privateKey.sign(password),
+				signature: privateKey.sign(password, encoding, encoding),
 			})
 		})
 	})
 }
 
 export function decryptMessage(recieverPrivateKey, encryptedMessage) {
-	const privateKey = new NodeRSA(stringToPem(recieverPrivateKey, 'PRIVATE'))
-	const password = privateKey.decrypt(encryptedMessage.encryptedPassword)
+	const privateKey = new NodeRSA(stringToPem(recieverPrivateKey, 'PRIVATE'), encryptionOptions)
+	const password = privateKey.decrypt(encryptedMessage.encryptedPassword, encoding)
 	return new Promise((resolve, reject) => {
 		crypto2.decrypt.aes256cbc(encryptedMessage.message, password, (err, decrypted) => {
 			if(err) reject(err)
 			const message = JSON.parse(decrypted)
-			const verified = new NodeRSA(stringToPem(message.publicKey, 'PUBLIC'))
-				.verify(password, encryptedMessage.signature)
+			const verified = new NodeRSA(
+				stringToPem(message.publicKey, 'PUBLIC'),
+				encryptionOptions
+			)
+				.verify(password, encryptedMessage.signature, encoding, encoding)
 			resolve({
 				senderAddress: message.publicKey,
 				content: message.content,
 				verified,
+				date: encryptedMessage.date,
 			})
 		})
 	})

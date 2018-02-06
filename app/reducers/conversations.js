@@ -3,6 +3,7 @@ import {
 	FINISH_SENDING_MESSAGE,
 	START_ADDING_CONVERSATION,
 	FINISH_ADDING_CONVERSATION,
+	ADD_MESSAGE,
 	CHANGE_PIN_STATE,
 } from '../actionTypes/index'
 
@@ -12,18 +13,25 @@ const createConversation = (publicKey, keysPair) => ({
 	name: '',
 	messages: [],
 	pinned: true,
+	lastSyncDate: undefined,
 })
-const createMessage = (messageText, id, synced) => ({
+const createMessage = (messageText, id, synced, isYours) => ({
 	id,
 	text: messageText,
 	date: new Date(),		//side cause
-	isYours: true,
+	isYours,
 	synced,
 })
-const addMessageToConversation = (conversation, message, id, synced) => Object.assign(
+const addMessageToConversation = (conversation, message, id, synced,
+	isYours, lastSyncDate = conversation.lastSyncDate) => Object.assign(
 	{},
 	conversation,
-	{ messages: [...conversation.messages, createMessage(message, id, synced)] }
+	{ messages: [...conversation.messages, createMessage(message, id, synced, isYours)] },
+	conversation.lastSyncDate !== undefined
+		? new Date(lastSyncDate) > new Date(conversation.lastSyncDate)
+			? { lastSyncDate }
+			: {}
+		: { lastSyncDate }
 )
 const syncMessageInConversation = (conversation, messageId) => ({
 	...conversation,
@@ -50,7 +58,8 @@ const conversationsReducer = (conversations = [], action) => {
 						conversation,
 						action.messageContent,
 						action.id,
-						false
+						false,
+						true,
 					)
 					: conversation
 			})
@@ -58,6 +67,19 @@ const conversationsReducer = (conversations = [], action) => {
 			return conversations.map((conversation) => {
 				return conversation.publicKey === action.publicKey
 					?	syncMessageInConversation(conversation, action.id)
+					: conversation
+			})
+		case ADD_MESSAGE:
+			return conversations.map((conversation) => {
+				return conversation.publicKey === action.senderPublicKey
+					?	addMessageToConversation(
+						conversation,
+						action.messageContent,
+						null,
+						true,
+						false,
+						action.date
+					)
 					: conversation
 			})
 		case CHANGE_PIN_STATE:

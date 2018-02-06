@@ -1,7 +1,8 @@
 import webworkify from 'webworkify'
 import KeyGeneratorWorker from '../others/keyGeneratorWorker'
 import axios from '../others/axiosInstance'
-import { encryptMessage } from '../others/Encryption'
+import { encryptMessage, decryptMessage } from '../others/Encryption'
+import { encodeMessage, decodeMessage } from '../others/Encoding'
 import uuid from 'uuid/v1'
 import { 
 	CHANGE_PIN_STATE,
@@ -12,6 +13,8 @@ import {
 	FINISH_SENDING_MESSAGE,
 	START_ADDING_CONVERSATION,
 	FINISH_ADDING_CONVERSATION,
+	ADD_MESSAGE,
+	REMOVE_FREE_KEY,
 } from '../actionTypes/index'
 export const startCreatingNewConversation = (publicKey) => ({
 	type: START_ADDING_CONVERSATION,
@@ -84,9 +87,59 @@ export const sendMessageAction = (recieverPublicKey, senderKeys, messageContent)
 		const messageId = uuid()
 		dispatch(startSendingMessage(recieverPublicKey, messageContent, messageId))
 		return encryptMessage(recieverPublicKey, senderKeys, messageContent)
-			.then(encryptedMessage => axios.post('/messages', encryptedMessage))
+			.then(encryptedMessage => axios.post('/messages', encodeMessage(encryptedMessage)))
 			.then(res => {
 				dispatch(finishSendingMessage(recieverPublicKey, messageId))
+			})
+			.catch(error => {
+				console.log(error)
+				//TODO: dispatch error action
+			})
+	}
+}
+
+export const addMessage = (senderPublicKey, messageContent, date) => ({
+	type: ADD_MESSAGE,
+	senderPublicKey,
+	messageContent,
+	date,
+})
+export const removeFreeKey = (publicKey) => ({
+	type: REMOVE_FREE_KEY,
+	publicKey,
+})
+export const fetchMessagesAction = (keysPair, startDate) => {
+	return function (dispatch, getState) {
+		//dispatch(startFetchingMessages(publicKey))
+		return axios.get(
+			'/messages',
+			{ params: { recieverAddress: keysPair.publicKey, startDate } }
+		)
+			.then(({ data: encryptedMessages }) => {
+				return Promise.all(encryptedMessages.map(
+					message => decryptMessage(keysPair.privateKey, decodeMessage(message))
+				))
+					.then(messages => {
+						const verifiedMessages = messages.filter(({ verified }) => verified)
+						const unverifiedMessagesCount = messages.length - verifiedMessages.length
+						if(unverifiedMessagesCount > 0)
+							console.log(`${ unverifiedMessagesCount } unverified messages`)
+						const state = getState()
+						verifiedMessages.forEach(message => {
+							const { senderAddress } = message
+							const conversationExists = state.conversations.some(
+								({ publicKey }) => publicKey === message.senderAddress
+							)
+							if(conversationExists) {
+								dispatch(addMessage(senderAddress, message.content, message.date))
+							} else {
+								dispatch(startCreatingNewConversation(senderAddress))
+								dispatch(finishCreatingNewConversation(senderAddress, keysPair))
+								dispatch(addMessage(senderAddress, message.content, message.date))
+								dispatch(removeFreeKey(keysPair.publicKey))
+							}
+						})
+					})
 			})
 			.catch(error => {
 				console.log(error)

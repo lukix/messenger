@@ -53,6 +53,12 @@
     "webworkify": "1.5.0"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": ["es2015"],
+    "plugins": [
+      "transform-react-jsx",
+      "transform-object-rest-spread",
+      "transform-class-properties",
+      "emotion"
+    ]
   }
 }

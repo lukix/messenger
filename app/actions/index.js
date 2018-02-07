@@ -125,8 +125,8 @@ export const fetchMessagesAction = (keysPair, startDate) => {
 						const unverifiedMessagesCount = messages.length - verifiedMessages.length
 						if(unverifiedMessagesCount > 0)
 							console.log(`${ unverifiedMessagesCount } unverified messages`)
-						const state = getState()
 						verifiedMessages.forEach(message => {
+							const state = getState()
 							const { senderAddress } = message
 							const conversationExists = state.conversations.some(
 								({ publicKey }) => publicKey === message.senderAddress

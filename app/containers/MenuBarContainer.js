@@ -15,6 +15,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		createNewKey: () => {
 			dispatch(createNewKeyAction())
 		},
+		wipeAppData: () => {
+			localStorage.removeItem('appState')
+			location.reload()
+		},
 	}
 }
 

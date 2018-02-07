@@ -2,6 +2,7 @@ import React from 'react'
 import Colors from '../others/Colors'
 import MediaQuery from 'react-responsive'
 import KeysBox from './menuBoxes/KeysBox'
+import SettingsBox from './menuBoxes/SettingsBox'
 
 const style = {
 	main: {
@@ -99,7 +100,7 @@ export default class MenuBar extends React.Component {
 	}
 	render() {
 		const { selectedItem } = this.state
-		const { keys, createNewKey, keyRequestInProgress } = this.props
+		const { keys, createNewKey, wipeAppData, keyRequestInProgress } = this.props
 		const menuItems = [
 			{ label: 'My Keys', icon: 'fa-key' },
 			{ label: 'Contacts', icon: 'fa-user' },
@@ -112,7 +113,7 @@ export default class MenuBar extends React.Component {
 				keyRequestInProgress={ keyRequestInProgress }
 			/>,
 			<div>Contacts:</div>,
-			<div>Settings:</div>,
+			<SettingsBox wipeAppData={ wipeAppData } />,
 		]
 		const dropdownStyle = (mobile) => ({
 			...style.dropdown,

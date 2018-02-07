@@ -16,6 +16,7 @@ export default function ConversationsList({
 	pinnedConversations,
 	onMessageSend,
 	onPinStateChange,
+	onConversationNameChange,
 }) {
 	const conversations = [...pinnedConversations, ...unpinnedConversations]
 	const conversationsList = conversations.map(
@@ -26,6 +27,7 @@ export default function ConversationsList({
 				conversation={ conversation }
 				onMessageSend={ onMessageSend }
 				onPinStateChange={ onPinStateChange }
+				onConversationNameChange={ onConversationNameChange }
 			/>
 	)
 	return <div style={{ ...style.main, ...customStyle }}>

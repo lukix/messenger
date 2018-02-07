@@ -15,6 +15,7 @@ import {
 	FINISH_ADDING_CONVERSATION,
 	ADD_MESSAGE,
 	REMOVE_FREE_KEY,
+	CHANGE_CONVERSATION_NAME,
 } from '../actionTypes/index'
 export const startCreatingNewConversation = (publicKey) => ({
 	type: START_ADDING_CONVERSATION,
@@ -148,3 +149,9 @@ export const fetchMessagesAction = (keysPair, startDate) => {
 			})
 	}
 }
+
+export const changeConversationName = (publicKey, newName) => ({
+	type: CHANGE_CONVERSATION_NAME,
+	publicKey,
+	newName,
+})

@@ -5,6 +5,7 @@ import {
 	FINISH_ADDING_CONVERSATION,
 	ADD_MESSAGE,
 	CHANGE_PIN_STATE,
+	CHANGE_CONVERSATION_NAME,
 } from '../actionTypes/index'
 
 const createConversation = (publicKey, keysPair) => ({
@@ -86,6 +87,12 @@ const conversationsReducer = (conversations = [], action) => {
 			return conversations.map((conversation) => {
 				return conversation.publicKey === action.publicKey
 					?	Object.assign({}, conversation, { pinned: action.pinned })
+					: conversation
+			})
+		case CHANGE_CONVERSATION_NAME:
+			return conversations.map((conversation) => {
+				return conversation.publicKey === action.publicKey
+					?	Object.assign({}, conversation, { name: action.newName })
 					: conversation
 			})
 		default:

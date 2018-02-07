@@ -27,10 +27,19 @@ const style = {
 		textOverflow: 'ellipsis',
 		whiteSpace: 'nowrap',
 		overflow: 'hidden',
+		width: '100%',
+	},
+	conversationNameEditBox: {
+		width: '100%',
+		background: 'transparent',
+		border: '1px solid #999',
+		fontSize: '1rem',
+		padding: '4px',
 	},
 	pin: {
 		height: '24px',
 		cursor: 'pointer',
+		marginLeft: '5px',
 	},
 	conversationBox: {
 		...SharedStyles.textFields,
@@ -39,15 +48,28 @@ const style = {
 	scrollArea: {
 		padding: '10px',
 	},
+	conversationOptions: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+		color: Colors.mainDark,
+		fontSize: '1.4rem',
+		marginLeft: '10px',
+	},
 }
 export default class ConversationCard extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			scrollToBottomFlag: false,
+			nameEditMode: false,
+			newConversationName: this.props.conversation.name,
 		}
 		this.messageSendHandler = this.messageSendHandler.bind(this)
 		this.pinStateChangeHandler = this.pinStateChangeHandler.bind(this)
+		this.toggleEditMode = this.toggleEditMode.bind(this)
+		this.editNameKeyPressHandler = this.editNameKeyPressHandler.bind(this)
+		this.editNameChangeHandler = this.editNameChangeHandler.bind(this)
 	}
 	componentDidMount() {
 		if(this.refs.scrollbars) this.refs.scrollbars.scrollToBottom()
@@ -69,7 +91,26 @@ export default class ConversationCard extends React.Component {
 			!this.props.conversation.pinned
 		)
 	}
+	toggleEditMode() {
+		this.setState({ nameEditMode: !this.state.nameEditMode })
+		if(this.state.nameEditMode) {
+			this.setState({ newConversationName: this.props.conversation.name })
+		}
+	}
+	editNameKeyPressHandler(event) {
+		if(event.key === 'Enter') {
+			this.toggleEditMode()
+			this.props.onConversationNameChange(
+				this.props.conversation.publicKey,
+				this.state.newConversationName
+			)
+		}
+	}
+	editNameChangeHandler(event) {
+		this.setState({ newConversationName: event.target.value })
+	}
 	render() {
+		const { nameEditMode } = this.state
 		const { style: customStyle, conversation } = this.props
 		const { name: contactName, publicKey: contactKey, messages, pinned, 
 			keysPair } = conversation
@@ -100,11 +141,28 @@ export default class ConversationCard extends React.Component {
 		</Card>
 		const normalCard = <Card style={{ ...style.main, ...customStyle }}>
 			<header style={ style.header }>
-				<div style={ style.conversationName }>{ conversationName }</div>
-				<div>
+				{
+					nameEditMode
+						? <input
+							type="text"
+							style={ style.conversationNameEditBox }
+							placeholder="Conversation name"
+							defaultValue={ contactName }
+							onChange={ this.editNameChangeHandler }
+							onBlur={ this.toggleEditMode }
+							onKeyPress={ this.editNameKeyPressHandler }
+							autoFocus
+						/>
+						: <div style={ style.conversationName } onClick={ this.toggleEditMode }>
+							{ conversationName }
+						</div>
+				}
+				
+				<div style={ style.conversationOptions }>
 					<img
 						src="./img/pin.png"
-						alt="pin"
+						alt="Pin conversation"
+						title="Pin conversation"
 						style={{ ...style.pin, ...pinnedStateStyle }}
 						onClick={ this.pinStateChangeHandler }
 					/>

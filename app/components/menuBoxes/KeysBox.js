@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import SharedStyles from '../../others/SharedStyles'
 import { PulseLoader } from 'react-spinners'
 import Colors from '../../others/Colors'
@@ -12,9 +13,7 @@ const style = {
 		listStyleType: 'circle',
 	},
 	publicKey: {
-		textOverflow: 'ellipsis',
-		whiteSpace: 'nowrap',
-		overflow: 'hidden',
+		marginBottom: '6px',
 	},
 	button: {
 		...SharedStyles.button,
@@ -33,12 +32,21 @@ const style = {
 		left: 0,
 		right: 0,
 	},
+	keyInputText: {
+		width: '100%',
+		background: 'transparent',
+		border: 'none',
+		outline: 'none',
+		color: 'white',
+		margin: '1px 0',
+	},
 }
 export default function KeysBox({ style: customStyle, keys, createNewKey, keyRequestInProgress }) {
 	const cursorType = keyRequestInProgress ? 'not-allowed' : 'pointer'
 	const listItems = keys.map(
-		(pair, index) => <li key={index}>
-			<div style={ style.publicKey }>{ pair.publicKey }</div>
+		(pair, index) => <li key={index} style={ style.publicKey }>
+			<div>{ moment(pair.created).format('MMM Do, HH:mm:ss') }</div>
+			<input type="text" style={ style.keyInputText } value={ pair.publicKey } readOnly />
 		</li>
 	)
 	const keysList = <div>

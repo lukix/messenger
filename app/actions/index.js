@@ -49,10 +49,11 @@ export const changePinStateAction = (publicKey, pinned) => ({
 	publicKey,
 	pinned,
 })
-export const addNewKeyAction = (privateKey, publicKey) => ({
+export const addNewKeyAction = (privateKey, publicKey, date) => ({
 	type: ADD_NEW_KEY,
 	privateKey,
 	publicKey,
+	date,
 })
 export const startCreatingNewKey = () => ({
 	type: START_CREATING_NEW_KEY,
@@ -77,7 +78,7 @@ export const createNewKeyAction = () => {
 		const worker = webworkify(KeyGeneratorWorker)
 		worker.addEventListener('message', function (event) {
 			const { publicKey, privateKey } = event.data
-			dispatch(addNewKeyAction(privateKey, publicKey))
+			dispatch(addNewKeyAction(privateKey, publicKey, new Date()))
 			dispatch(finishCreatingNewKey())
 		})
 	}

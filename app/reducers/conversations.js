@@ -16,24 +16,44 @@ const createConversation = (publicKey, keysPair) => ({
 	pinned: true,
 	lastSyncDate: undefined,
 })
-const createMessage = (messageText, id, synced, isYours) => ({
+const createMessage = (messageText, id, synced, isYours, date = new Date()) => ({
 	id,
 	text: messageText,
-	date: new Date(),		//side cause
+	date,
 	isYours,
 	synced,
 })
+const appendMessage = (messages, message) => {
+	let position = messages.length
+	for(let i = messages.length - 1; i >= 0; i--) {
+		if(new Date(messages[i].date) < message.date) {
+			break
+		}
+		position = i
+	}
+	return [
+		...messages.slice(0, position),
+		message,
+		...messages.slice(position),
+	]
+}
 const addMessageToConversation = (conversation, message, id, synced,
-	isYours, lastSyncDate = conversation.lastSyncDate) => Object.assign(
-	{},
-	conversation,
-	{ messages: [...conversation.messages, createMessage(message, id, synced, isYours)] },
-	conversation.lastSyncDate !== undefined
+	isYours, lastSyncDate = conversation.lastSyncDate, messageDate) => {
+	const newLastSyncDate = conversation.lastSyncDate !== undefined
 		? new Date(lastSyncDate) > new Date(conversation.lastSyncDate)
-			? { lastSyncDate }
-			: {}
-		: { lastSyncDate }
-)
+			? lastSyncDate
+			: conversation.lastSyncDate
+		: lastSyncDate
+	return {
+		...conversation,
+		lastSyncDate: newLastSyncDate,
+		messages: appendMessage(
+			conversation.messages,
+			createMessage(message, id, synced, isYours, messageDate)
+		),
+	}
+}
+
 const syncMessageInConversation = (conversation, messageId) => ({
 	...conversation,
 	messages: conversation.messages.map(
@@ -61,6 +81,8 @@ const conversationsReducer = (conversations = [], action) => {
 						action.id,
 						false,
 						true,
+						undefined,
+						new Date(),	//side cause
 					)
 					: conversation
 			})
@@ -79,7 +101,8 @@ const conversationsReducer = (conversations = [], action) => {
 						null,
 						true,
 						false,
-						action.date
+						action.date,
+						action.date,
 					)
 					: conversation
 			})

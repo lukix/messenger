@@ -80,6 +80,11 @@ export default class ConversationCard extends React.Component {
 			this.setState({ scrollToBottomFlag: false })
 		}
 	}
+	componentWillReceiveProps(newProps) {
+		if(newProps.conversation.messages.length > this.props.conversation.messages.length) {
+			this.setState({ scrollToBottomFlag: true })
+		}
+	}
 	messageSendHandler(message) {
 		const { publicKey, keysPair } = this.props.conversation
 		this.props.onMessageSend(publicKey, keysPair, message)

@@ -7,6 +7,7 @@ import { createStore, applyMiddleware } from 'redux'
 import mainReducer from './reducers/index'
 import App from './components/App'
 import { fetchMessagesAction } from './actions/index'
+import io from 'socket.io-client'
 
 (function initializeReact() {
 	const fetchNewMessages = (store) => {
@@ -32,7 +33,28 @@ import { fetchMessagesAction } from './actions/index'
 		},
 	}
 	const initialState = readStateFromLocalStorage(localStorageObjectName) || defaultEmptyState
-	const store = createStore(mainReducer, initialState, applyMiddleware(thunkMiddleware))
+	const socket = io('http://localhost:8080')
+	socket.on('connect', function () {
+		store.getState().conversations.forEach(({ keysPair }) => {
+			socket.emit('listen', keysPair.publicKey)
+		})
+	})
+	socket.on('message', function (publicKey) {
+		const conversation = store.getState().conversations.find(
+			({ keysPair }) => keysPair.publicKey === publicKey
+		)
+		if(conversation !== undefined) {
+			const { keysPair, lastSyncDate } = conversation
+			store.dispatch(fetchMessagesAction(keysPair, lastSyncDate))
+		}
+	})
+	socket.on('disconnect', function () {})
+
+	const store = createStore(
+		mainReducer,
+		initialState,
+		applyMiddleware(thunkMiddleware)
+	)
 	store.subscribe(function handleStateChange() {
 		localStorage.setItem(
 			localStorageObjectName,

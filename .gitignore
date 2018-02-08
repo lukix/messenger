@@ -21,5 +21,8 @@ bower_components/
 # Build
 build/
 
+# Database files
+db/
+
 # Editor config
 .vscode

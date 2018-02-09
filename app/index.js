@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux'
 import mainReducer from './reducers/index'
 import App from './components/App'
 import { fetchMessagesAction } from './actions/index'
-import initSockets from './others/initSockets'
+import initSockets from './others/sockets'
 import StatePersistence from './others/StatePersistence'
 
 (function initializeReact() {

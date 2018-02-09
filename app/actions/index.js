@@ -4,6 +4,7 @@ import axios from '../others/axiosInstance'
 import { encryptMessage, decryptMessage } from '../others/Encryption'
 import { encodeMessage, decodeMessage } from '../others/Encoding'
 import uuid from 'uuid/v1'
+import { registerPublicKeyListener } from '../others/sockets'
 import { 
 	CHANGE_PIN_STATE,
 	ADD_NEW_KEY,
@@ -21,11 +22,14 @@ export const startCreatingNewConversation = (publicKey) => ({
 	type: START_ADDING_CONVERSATION,
 	publicKey,
 })
-export const finishCreatingNewConversation = (publicKey, keysPair) => ({
-	type: FINISH_ADDING_CONVERSATION,
-	publicKey,
-	keysPair,
-})
+export const finishCreatingNewConversation = (publicKey, keysPair) => {
+	registerPublicKeyListener(keysPair.publicKey)
+	return {
+		type: FINISH_ADDING_CONVERSATION,
+		publicKey,
+		keysPair,
+	}
+}
 export const addConversationAction = (publicKey) => {
 	return function (dispatch) {
 		return new Promise((resolve, reject) => {
@@ -51,12 +55,15 @@ export const changePinStateAction = (publicKey, pinned, pinChangeDate) => ({
 	pinned,
 	pinChangeDate,
 })
-export const addNewKeyAction = (privateKey, publicKey, date) => ({
-	type: ADD_NEW_KEY,
-	privateKey,
-	publicKey,
-	date,
-})
+export const addNewKeyAction = (privateKey, publicKey, date) => {
+	registerPublicKeyListener(publicKey)
+	return {
+		type: ADD_NEW_KEY,
+		privateKey,
+		publicKey,
+		date,
+	}
+}
 export const startCreatingNewKey = () => ({
 	type: START_CREATING_NEW_KEY,
 })
@@ -111,6 +118,21 @@ export const removeFreeKey = (publicKey) => ({
 	type: REMOVE_FREE_KEY,
 	publicKey,
 })
+const processVerifiedMessage = (dispatch, getState, message, keysPair) => {
+	const state = getState()
+	const { senderAddress } = message
+	const conversationExists = state.conversations.some(
+		({ publicKey }) => publicKey === message.senderAddress
+	)
+	if(conversationExists) {
+		dispatch(addMessage(senderAddress, message.content, message.date))
+	} else {
+		dispatch(startCreatingNewConversation(senderAddress))
+		dispatch(finishCreatingNewConversation(senderAddress, keysPair))
+		dispatch(addMessage(senderAddress, message.content, message.date))
+		dispatch(removeFreeKey(keysPair.publicKey))
+	}
+}
 export const fetchMessagesAction = (keysPair, startDate) => {
 	return function (dispatch, getState) {
 		//dispatch(startFetchingMessages(publicKey))
@@ -127,21 +149,9 @@ export const fetchMessagesAction = (keysPair, startDate) => {
 						const unverifiedMessagesCount = messages.length - verifiedMessages.length
 						if(unverifiedMessagesCount > 0)
 							console.log(`${ unverifiedMessagesCount } unverified messages`)
-						verifiedMessages.forEach(message => {
-							const state = getState()
-							const { senderAddress } = message
-							const conversationExists = state.conversations.some(
-								({ publicKey }) => publicKey === message.senderAddress
-							)
-							if(conversationExists) {
-								dispatch(addMessage(senderAddress, message.content, message.date))
-							} else {
-								dispatch(startCreatingNewConversation(senderAddress))
-								dispatch(finishCreatingNewConversation(senderAddress, keysPair))
-								dispatch(addMessage(senderAddress, message.content, message.date))
-								dispatch(removeFreeKey(keysPair.publicKey))
-							}
-						})
+						verifiedMessages.forEach(
+							message => processVerifiedMessage(dispatch, getState, message, keysPair)
+						)
 					})
 			})
 			.catch(error => {

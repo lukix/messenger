@@ -7,7 +7,8 @@ import { createStore, applyMiddleware } from 'redux'
 import mainReducer from './reducers/index'
 import App from './components/App'
 import { fetchMessagesAction } from './actions/index'
-import io from 'socket.io-client'
+import initSockets from './others/initSockets'
+import StatePersistence from './others/StatePersistence'
 
 (function initializeReact() {
 	const fetchNewMessages = (store) => {
@@ -18,50 +19,17 @@ import io from 'socket.io-client'
 			store.dispatch(fetchMessagesAction(keysPair, undefined))
 		})
 	}
-	const readStateFromLocalStorage = (objectName) => {
-		return JSON.parse(localStorage.getItem(objectName))
-	}
-		
-	const localStorageObjectName = 'appState'
-	const defaultEmptyState = {
-		keys: [],
-		notifications: [],
-		conversations: [],
-		settings: {},
-		others: {
-			keyRequestInProgress: false,
-		},
-	}
-	const initialState = readStateFromLocalStorage(localStorageObjectName) || defaultEmptyState
-	const socket = io('http://localhost:8080')
-	socket.on('connect', function () {
-		store.getState().conversations.forEach(({ keysPair }) => {
-			socket.emit('listen', keysPair.publicKey)
-		})
-	})
-	socket.on('message', function (publicKey) {
-		const conversation = store.getState().conversations.find(
-			({ keysPair }) => keysPair.publicKey === publicKey
-		)
-		if(conversation !== undefined) {
-			const { keysPair, lastSyncDate } = conversation
-			store.dispatch(fetchMessagesAction(keysPair, lastSyncDate))
-		}
-	})
-	socket.on('disconnect', function () {})
-
+	
+	const statePersistence = StatePersistence('appState')
 	const store = createStore(
 		mainReducer,
-		initialState,
+		statePersistence.getInitialState(),
 		applyMiddleware(thunkMiddleware)
 	)
-	store.subscribe(function handleStateChange() {
-		localStorage.setItem(
-			localStorageObjectName,
-			JSON.stringify(store.getState())
-		)
-	})
+	store.subscribe(() => statePersistence.saveState(store.getState()))
+	initSockets(store, 'http://localhost:8080')
 	fetchNewMessages(store)
+
 	const Root = ({ store }) => (
 		<Provider store={store}>
 			<BrowserRouter>

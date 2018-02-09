@@ -45,10 +45,11 @@ export const addConversationAndSendMessageAction = (publicKey, message) => {
 		})
 	}
 }
-export const changePinStateAction = (publicKey, pinned) => ({
+export const changePinStateAction = (publicKey, pinned, pinChangeDate) => ({
 	type: CHANGE_PIN_STATE,
 	publicKey,
 	pinned,
+	pinChangeDate,
 })
 export const addNewKeyAction = (privateKey, publicKey, date) => ({
 	type: ADD_NEW_KEY,

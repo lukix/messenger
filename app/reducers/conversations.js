@@ -15,6 +15,7 @@ const createConversation = (publicKey, keysPair) => ({
 	messages: [],
 	pinned: true,
 	lastSyncDate: undefined,
+	pinChangeDate: new Date(),	//side cause
 })
 const createMessage = (messageText, id, synced, isYours, date = new Date()) => ({
 	id,
@@ -109,7 +110,11 @@ const conversationsReducer = (conversations = [], action) => {
 		case CHANGE_PIN_STATE:
 			return conversations.map((conversation) => {
 				return conversation.publicKey === action.publicKey
-					?	Object.assign({}, conversation, { pinned: action.pinned })
+					?	{
+						...conversation,
+						pinned: action.pinned,
+						pinChangeDate: action.pinChangeDate,
+					}
 					: conversation
 			})
 		case CHANGE_CONVERSATION_NAME:

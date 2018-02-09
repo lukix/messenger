@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 			dispatch(sendMessageAction(publicKey, keysPair, message))
 		},
 		onPinStateChange: (publicKey, pinned) => {
-			dispatch(changePinStateAction(publicKey, pinned))
+			dispatch(changePinStateAction(publicKey, pinned, new Date()))
 		},
 		onConversationNameChange: (publicKey, newName) => {
 			dispatch(changeConversationName(publicKey, newName))

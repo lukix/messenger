@@ -37,8 +37,10 @@ export default class MessageSendPanel extends React.Component {
 		this.setState({ messageText: event.target.value })
 	}
 	messageSendHandler() {
-		this.props.onMessageSend(this.state.messageText)
-		this.setState({ messageText: '' })
+		if(this.state.messageText.trim().length > 0) {
+			this.props.onMessageSend(this.state.messageText.trim())
+			this.setState({ messageText: '' })
+		}
 	}
 	keyPressHandler(event) {
 		if(event.key === 'Enter' && !event.shiftKey) {

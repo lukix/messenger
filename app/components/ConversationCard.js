@@ -57,6 +57,9 @@ const style = {
 		marginLeft: '10px',
 	},
 }
+const transformNewlinesToJSX = (str) => str.split('\n').map(
+	(item, key) => <span key={key}>{item}<br/></span>
+)
 export default class ConversationCard extends React.Component {
 	constructor(props) {
 		super(props)
@@ -124,7 +127,7 @@ export default class ConversationCard extends React.Component {
 		const messagesList = messages.map(
 			(message, index) =>
 				<Message key={ index } left={ !message.isYours } synced={ message.synced }>
-					{ message.text }
+					{ transformNewlinesToJSX(message.text) }
 				</Message>
 		)
 		const scrollbarProps = {

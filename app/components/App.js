@@ -36,6 +36,7 @@ const style = {
 		height: '90px',
 		lineHeight: '90px',
 	},
+	versionName: {},
 }
 
 export default function App() {
@@ -46,10 +47,20 @@ export default function App() {
 		...(matches ? {} : { margin: '20px 0 15px 0' } ),
 		fontSize: matches ? '5rem' : '3.5rem',
 	})
+	const versionNameStyles = (matches) => ({
+		...style.versionName,
+		...(matches ? {} : { lineHeight: '10px' } ),
+		fontSize: matches ? '2rem' : '1.3rem',
+	})
+	const versionName = ''
 	return <div style={ style.main }>
 		<MenuBarContainer />
 		<MediaQuery minDeviceWidth={500}>
-			{ (matches) => <h1 style={ titleStyles(matches) }>Messenger</h1> }
+			{ (matches) => <h1 style={ titleStyles(matches) }>
+				Messenger
+				{ matches ? '' : <br /> }
+				<sub style={ versionNameStyles(matches) }>{ versionName }</sub>
+			</h1> }
 		</MediaQuery>
 
 		<SearchCardContainer style={{ width: cardWidth, maxWidth: cardMaxWidth }} />

@@ -1,3 +1,5 @@
+import { serialize, deserialize } from './serialization'
+
 const defaultEmptyState = {
 	keys: [],
 	notifications: [],
@@ -13,12 +15,17 @@ const readStateFromLocalStorage = (objectName) => {
 export default function StatePersistance(localStorageObjectName) {
 	return {
 		getInitialState() {
-			return readStateFromLocalStorage(localStorageObjectName) || defaultEmptyState
+			const localStorageState = readStateFromLocalStorage(localStorageObjectName)
+			if(localStorageState) {
+				return deserialize(localStorageState)
+			} else {
+				return defaultEmptyState
+			}
 		},
 		saveState(state) {
 			localStorage.setItem(
 				localStorageObjectName,
-				JSON.stringify(state)
+				JSON.stringify(serialize(state))
 			)
 		},
 	} 

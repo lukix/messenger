@@ -14,7 +14,7 @@ const createConversation = (publicKey, keysPair) => ({
 	name: '',
 	messages: [],
 	pinned: true,
-	lastSyncDate: undefined,
+	lastSyncDate: new Date(0),
 	pinChangeDate: new Date(),	//side cause
 })
 const createMessage = (messageText, id, synced, isYours, date = new Date()) => ({
@@ -27,7 +27,7 @@ const createMessage = (messageText, id, synced, isYours, date = new Date()) => (
 const appendMessage = (messages, message) => {
 	let position = messages.length
 	for(let i = messages.length - 1; i >= 0; i--) {
-		if(new Date(messages[i].date) < message.date) {
+		if(messages[i].date < message.date) {
 			break
 		}
 		position = i
@@ -41,7 +41,7 @@ const appendMessage = (messages, message) => {
 const addMessageToConversation = (conversation, message, id, synced,
 	isYours, lastSyncDate = conversation.lastSyncDate, messageDate) => {
 	const newLastSyncDate = conversation.lastSyncDate !== undefined
-		? new Date(lastSyncDate) > new Date(conversation.lastSyncDate)
+		? lastSyncDate > conversation.lastSyncDate
 			? lastSyncDate
 			: conversation.lastSyncDate
 		: lastSyncDate

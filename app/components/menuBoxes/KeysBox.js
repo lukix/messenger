@@ -36,17 +36,23 @@ const style = {
 		width: '100%',
 		background: 'transparent',
 		border: 'none',
-		outline: 'none',
 		color: 'white',
 		margin: '1px 0',
 	},
 }
+const selectTarget = (event) => event.target.select()
 export default function KeysBox({ style: customStyle, keys, createNewKey, keyRequestInProgress }) {
 	const cursorType = keyRequestInProgress ? 'not-allowed' : 'pointer'
 	const listItems = keys.map(
 		(pair, index) => <li key={index} style={ style.publicKey }>
 			<div>{ moment(pair.created).format('MMM Do, HH:mm:ss') }</div>
-			<input type="text" style={ style.keyInputText } value={ pair.publicKey } readOnly />
+			<input
+				type="text"
+				style={ style.keyInputText }
+				value={ pair.publicKey }
+				readOnly
+				onFocus={ selectTarget }
+			/>
 		</li>
 	)
 	const keysList = <div>

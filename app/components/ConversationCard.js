@@ -28,6 +28,7 @@ const style = {
 		whiteSpace: 'nowrap',
 		overflow: 'hidden',
 		width: '100%',
+		cursor: 'pointer',
 	},
 	conversationNameEditBox: {
 		width: '100%',

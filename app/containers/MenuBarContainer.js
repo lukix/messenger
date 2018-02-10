@@ -1,12 +1,13 @@
 import { connect } from 'react-redux'
 import MenuBar from './../components/MenuBar'
-import { createNewKeyAction } from '../actions/index'
+import { createNewKeyAction, changeMessageSoundOn } from '../actions/index'
 
 const mapStateToProps = (state, ownProps) => {
 	return {
 		...ownProps,
 		keys: state.keys,
 		keyRequestInProgress: state.others.keyRequestInProgress,
+		messageSoundOn: state.others.messageSoundOn,
 	}
 }
 
@@ -18,6 +19,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		wipeAppData: () => {
 			localStorage.removeItem('appState')
 			location.reload()
+		},
+		setMessageSoundOn: (on) => {
+			dispatch(changeMessageSoundOn(on))
 		},
 	}
 }

@@ -7,6 +7,7 @@ const defaultEmptyState = {
 	settings: {},
 	others: {
 		keyRequestInProgress: false,
+		messageSoundOn: true,
 	},
 }
 const readStateFromLocalStorage = (objectName) => {

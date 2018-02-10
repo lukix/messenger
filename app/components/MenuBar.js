@@ -100,7 +100,8 @@ export default class MenuBar extends React.Component {
 	}
 	render() {
 		const { selectedItem } = this.state
-		const { keys, createNewKey, wipeAppData, keyRequestInProgress } = this.props
+		const { keys, createNewKey, wipeAppData, keyRequestInProgress,
+			messageSoundOn, setMessageSoundOn } = this.props
 		const menuItems = [
 			{ label: 'My Keys', icon: 'fa-key' },
 			{ label: 'Contacts', icon: 'fa-user' },
@@ -113,7 +114,11 @@ export default class MenuBar extends React.Component {
 				keyRequestInProgress={ keyRequestInProgress }
 			/>,
 			<div>Contacts:</div>,
-			<SettingsBox wipeAppData={ wipeAppData } />,
+			<SettingsBox
+				wipeAppData={ wipeAppData }
+				messageSoundOn={ messageSoundOn }
+				setMessageSoundOn={ setMessageSoundOn }
+			/>,
 		]
 		const dropdownStyle = (mobile) => ({
 			...style.dropdown,

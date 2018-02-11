@@ -66,6 +66,7 @@ const style = {
 		top: '60px',
 		left: '-10px',
 		right: '20px',
+		minWidth: '380px',
 	},
 	dropdownMobile: {
 		position: 'absolute',
@@ -104,7 +105,6 @@ export default class MenuBar extends React.Component {
 			messageSoundOn, setMessageSoundOn } = this.props
 		const menuItems = [
 			{ label: 'My Keys', icon: 'fa-key' },
-			{ label: 'Contacts', icon: 'fa-user' },
 			{ label: 'Settings', icon: 'fa-cog' },
 		]
 		const menuBoxes = [
@@ -113,7 +113,6 @@ export default class MenuBar extends React.Component {
 				createNewKey={ createNewKey }
 				keyRequestInProgress={ keyRequestInProgress }
 			/>,
-			<div>Contacts:</div>,
 			<SettingsBox
 				wipeAppData={ wipeAppData }
 				messageSoundOn={ messageSoundOn }
@@ -136,7 +135,7 @@ export default class MenuBar extends React.Component {
 							>
 								<div style={ style.menuItem }>
 									{ <i className={`fa ${item.icon}`} aria-hidden="true"></i> }
-									<MediaQuery minDeviceWidth={ 500 }>
+									<MediaQuery minDeviceWidth={ 400 }>
 										<span style={ style.label }>{ item.label }</span>
 									</MediaQuery>
 								</div>
@@ -160,10 +159,12 @@ export default class MenuBar extends React.Component {
 				}
 			</div>
 			<div style={ style.notifications }>
+				{ /*
 				<i className="fa fa-bell" aria-hidden="true"></i>
 				<MediaQuery minDeviceWidth={ 700 }>
 					<span style={ style.label }>Notifications</span>
 				</MediaQuery>
+				*/ }
 			</div>
 		</div>
 	}

@@ -13,12 +13,19 @@ export default {
 	button: {
 		background: Colors.mainDark,
 		display: 'block',
-		border: `2px solid ${Colors.mainLight}`,
+		border: 'none',
 		fontSize: '24px',
 		color: 'white',
 		padding: '0 8px',
 		cursor: 'pointer',
 		height: '42px',
 		borderRadius: '4px',
+	},
+	menuBoxButton: {
+		border: `2px solid ${Colors.mainLight}`,
+		background: 'white',
+		color: 'black',
+		fontSize: '1.2rem',
+		width: '100%',
 	},
 }

@@ -7,10 +7,7 @@ const style = {
 	main: {},
 	button: {
 		...SharedStyles.button,
-		background: 'white',
-		color: 'black',
-		fontSize: '1.2rem',
-		width: '100%',
+		...SharedStyles.menuBoxButton,
 		textAlign: 'center',
 	},
 	label: {

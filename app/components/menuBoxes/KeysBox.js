@@ -17,11 +17,8 @@ const style = {
 	},
 	button: {
 		...SharedStyles.button,
-		background: 'white',
-		color: 'black',
-		fontSize: '1.2rem',
+		...SharedStyles.menuBoxButton,
 		display: 'flex',
-		width: '100%',
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
 		alignItems: 'center',

@@ -13,7 +13,7 @@ export default {
 	button: {
 		background: Colors.mainDark,
 		display: 'block',
-		border: 'none',
+		border: `2px solid ${Colors.mainLight}`,
 		fontSize: '24px',
 		color: 'white',
 		padding: '0 8px',

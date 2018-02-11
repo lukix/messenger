@@ -3,6 +3,12 @@ import { fetchMessagesAction } from '../actions/index'
 
 let socket = null
 const registeredKeys = []
+const playMessageSound = (soundOn) => {
+	if(soundOn) {
+		const audio = new Audio('./sounds/pop.wav')
+		audio.play()
+	}
+}
 export default function initSockets(store, url) {
 	socket = io(url)
 	socket.on('connect', function () {
@@ -22,12 +28,14 @@ export default function initSockets(store, url) {
 		if(conversation !== undefined) {
 			const { keysPair, lastSyncDate } = conversation
 			store.dispatch(fetchMessagesAction(keysPair, lastSyncDate))
+				.then(() => playMessageSound(state.others.messageSoundOn))
 		} else {
 			const keysPair = state.keys.find(
 				(keysPair) => keysPair.publicKey === publicKey
 			)
 			if(keysPair !== undefined) {
 				store.dispatch(fetchMessagesAction(keysPair, undefined))
+					.then(() => playMessageSound(state.others.messageSoundOn))
 			}
 		}
 	})

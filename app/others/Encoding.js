@@ -1,5 +1,8 @@
-export function encodeMessage(message) {
-	return message
+export function encodeMessage(message, clientGeneratedId) {
+	return {
+		...message,
+		clientGeneratedId,
+	}
 }
 export function decodeMessage(message) {
 	return {

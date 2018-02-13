@@ -9,6 +9,7 @@ import App from './components/App'
 import { fetchMessagesAction } from './actions/index'
 import initSockets from './others/sockets'
 import StatePersistence from './others/StatePersistence'
+import { fixNotSyncedMessages } from './others/syncStatusCheck'
 
 (function initializeReact() {
 	const fetchNewMessages = (store) => {
@@ -27,6 +28,7 @@ import StatePersistence from './others/StatePersistence'
 		applyMiddleware(thunkMiddleware)
 	)
 	store.subscribe(() => statePersistence.saveState(store.getState()))
+	fixNotSyncedMessages(store.getState().conversations, store.dispatch)
 	initSockets(store, 'http://localhost:8080')
 	fetchNewMessages(store)
 

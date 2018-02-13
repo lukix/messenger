@@ -110,7 +110,8 @@ export const sendMessageAction = (recieverPublicKey, senderKeys, messageContent)
 		const messageId = uuid()
 		dispatch(startSendingMessage(recieverPublicKey, messageContent, messageId))
 		return encryptMessage(recieverPublicKey, senderKeys, messageContent)
-			.then(encryptedMessage => axios.post('/messages', encodeMessage(encryptedMessage)))
+			.then(encryptedMessage =>
+				axios.post('/messages', encodeMessage(encryptedMessage, messageId)))
 			.then(res => {
 				dispatch(finishSendingMessage(recieverPublicKey, messageId))
 			})
@@ -181,3 +182,22 @@ export const changeMessageSoundOn = (on) => ({
 	type: CHANGE_MESSAGE_SOUND_ON,
 	on,
 })
+export const checkMessageSyncStatus = (recieverAddress, startDate, clientGeneratedId ) => {
+	return function (dispatch, getState) {
+		return axios.get(
+			'/messages',
+			{ params: { recieverAddress, startDate, clientGeneratedId } }
+		)
+			.then(({ data: encryptedMessages }) => {
+				if(encryptedMessages.length > 0) {
+					dispatch(finishSendingMessage(recieverAddress, clientGeneratedId))
+				} else {
+					dispatch(sendingMessageError(recieverAddress, clientGeneratedId))
+				}
+			})
+			.catch(error => {
+				console.log(error)
+				//TODO: dispatch error action
+			})
+	}
+}

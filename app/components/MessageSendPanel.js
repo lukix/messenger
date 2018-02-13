@@ -60,7 +60,7 @@ export default class MessageSendPanel extends React.Component {
 				onKeyPress={ this.keyPressHandler }
 			/>
 			<button style={ style.button } onClick={ this.messageSendHandler }>
-				<i className="fa fa-paper-plane-o" aria-hidden="true"></i>
+				<i className="far fa-paper-plane"></i>
 			</button>
 		</div>
 	}

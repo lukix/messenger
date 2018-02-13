@@ -104,8 +104,8 @@ export default class MenuBar extends React.Component {
 		const { keys, createNewKey, wipeAppData, keyRequestInProgress,
 			messageSoundOn, setMessageSoundOn } = this.props
 		const menuItems = [
-			{ label: 'My Keys', icon: 'fa-key' },
-			{ label: 'Settings', icon: 'fa-cog' },
+			{ label: 'My Keys', icon: 'fas fa-key' },
+			{ label: 'Settings', icon: 'fas fa-cog' },
 		]
 		const menuBoxes = [
 			<KeysBox
@@ -134,7 +134,7 @@ export default class MenuBar extends React.Component {
 								onClick={ this.handleItemClick(index) }
 							>
 								<div style={ style.menuItem }>
-									{ <i className={`fa ${item.icon}`} aria-hidden="true"></i> }
+									{ <i className={ item.icon }></i> }
 									<MediaQuery minDeviceWidth={ 400 }>
 										<span style={ style.label }>{ item.label }</span>
 									</MediaQuery>
@@ -160,7 +160,7 @@ export default class MenuBar extends React.Component {
 			</div>
 			<div style={ style.notifications }>
 				{ /*
-				<i className="fa fa-bell" aria-hidden="true"></i>
+				<i className="fas fa-bell"></i>
 				<MediaQuery minDeviceWidth={ 700 }>
 					<span style={ style.label }>Notifications</span>
 				</MediaQuery>

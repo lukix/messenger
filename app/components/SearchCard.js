@@ -140,7 +140,7 @@ export default class SearchCard extends React.Component {
 			<div style={ style.searchPanel }>
 				{ /*
 				<button style={ style.button }>
-					<i className="fa fa-user" aria-hidden="true"></i>
+					<i className="fas fa-user"></i>
 				</button>
 				*/ }
 				<div style={ style.autosuggestWrapper }>
@@ -154,7 +154,7 @@ export default class SearchCard extends React.Component {
 					/>
 				</div>
 				<button style={ style.button } onClick={ this.onSearchButtonClick }>
-					<i className="fa fa-search" aria-hidden="true"></i>
+					<i className="fas fa-search"></i>
 				</button>
 			</div>
 			{ resultElement }

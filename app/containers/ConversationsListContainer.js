@@ -1,6 +1,11 @@
 import { connect } from 'react-redux'
 import ConversationsList from './../components/ConversationsList'
-import { sendMessageAction, changePinStateAction, changeConversationName } from '../actions/index'
+import {
+	sendMessageAction,
+	removeMessage,
+	changePinStateAction,
+	changeConversationName,
+} from '../actions/index'
 
 const mapStateToProps = (state, ownProps) => {
 	return {
@@ -14,6 +19,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		onMessageSend: (publicKey, keysPair, message) => {
 			dispatch(sendMessageAction(publicKey, keysPair, message))
+		},
+		removeMessage: (publicKey, messageId) => {
+			dispatch(removeMessage(publicKey, messageId))
+		},
+		resendMessage: (publicKey, keysPair, messageContent, messageId) => {
+			dispatch(removeMessage(publicKey, messageId))
+			dispatch(sendMessageAction(publicKey, keysPair, messageContent))
 		},
 		onPinStateChange: (publicKey, pinned) => {
 			dispatch(changePinStateAction(publicKey, pinned, new Date()))

@@ -1,6 +1,10 @@
 
 const deserializeMessages = (messages) => messages.map(
-	message => ({ ...message, date: new Date(message.date) })
+	message => ({
+		...message,
+		date: new Date(message.date),
+		error: message.error || !message.synced,
+	})
 )
 const deserializeConversations =
 	(conversations) => conversations

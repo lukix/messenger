@@ -18,6 +18,8 @@ import {
 	REMOVE_FREE_KEY,
 	CHANGE_CONVERSATION_NAME,
 	CHANGE_MESSAGE_SOUND_ON,
+	SENDING_MESSAGE_ERROR,
+	REMOVE_MESSAGE,
 } from '../actionTypes/index'
 export const startCreatingNewConversation = (publicKey) => ({
 	type: START_ADDING_CONVERSATION,
@@ -82,6 +84,16 @@ export const finishSendingMessage = (publicKey, id) => ({
 	publicKey,
 	id,
 })
+export const sendingMessageError = (publicKey, id) => ({
+	type: SENDING_MESSAGE_ERROR,
+	publicKey,
+	id,
+})
+export const removeMessage = (publicKey, id) => ({
+	type: REMOVE_MESSAGE,
+	publicKey,
+	id,
+})
 export const createNewKeyAction = () => {
 	return function (dispatch) {
 		dispatch(startCreatingNewKey()) //Creating key started
@@ -103,8 +115,7 @@ export const sendMessageAction = (recieverPublicKey, senderKeys, messageContent)
 				dispatch(finishSendingMessage(recieverPublicKey, messageId))
 			})
 			.catch(error => {
-				console.log(error)
-				//TODO: dispatch error action
+				dispatch(sendingMessageError(recieverPublicKey, messageId))
 			})
 	}
 }

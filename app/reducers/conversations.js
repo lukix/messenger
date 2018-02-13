@@ -3,9 +3,11 @@ import {
 	FINISH_SENDING_MESSAGE,
 	START_ADDING_CONVERSATION,
 	FINISH_ADDING_CONVERSATION,
+	SENDING_MESSAGE_ERROR,
 	ADD_MESSAGE,
 	CHANGE_PIN_STATE,
 	CHANGE_CONVERSATION_NAME,
+	REMOVE_MESSAGE,
 } from '../actionTypes/index'
 
 const createConversation = (publicKey, keysPair) => ({
@@ -54,13 +56,12 @@ const addMessageToConversation = (conversation, message, id, synced,
 		),
 	}
 }
-
-const syncMessageInConversation = (conversation, messageId) => ({
+const modifyMessageInConversation = (conversation, messageId, modificationObj) => ({
 	...conversation,
 	messages: conversation.messages.map(
 		message => message.id !== messageId
 			? message
-			: { ...message, synced: true }
+			: { ...message, ...modificationObj }
 	),
 })
 const conversationsReducer = (conversations = [], action) => {
@@ -90,7 +91,13 @@ const conversationsReducer = (conversations = [], action) => {
 		case FINISH_SENDING_MESSAGE:
 			return conversations.map((conversation) => {
 				return conversation.publicKey === action.publicKey
-					?	syncMessageInConversation(conversation, action.id)
+					?	modifyMessageInConversation(conversation, action.id, { synced: true })
+					: conversation
+			})
+		case SENDING_MESSAGE_ERROR:
+			return conversations.map((conversation) => {
+				return conversation.publicKey === action.publicKey
+					?	modifyMessageInConversation(conversation, action.id, { error: true })
 					: conversation
 			})
 		case ADD_MESSAGE:
@@ -105,6 +112,15 @@ const conversationsReducer = (conversations = [], action) => {
 						action.date,
 						action.date,
 					)
+					: conversation
+			})
+		case REMOVE_MESSAGE:
+			return conversations.map((conversation) => {
+				return conversation.publicKey === action.publicKey
+					?	{
+						...conversation,
+						messages: conversation.messages.filter(message => message.id !== action.id),
+					}
 					: conversation
 			})
 		case CHANGE_PIN_STATE:

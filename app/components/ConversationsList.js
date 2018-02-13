@@ -25,6 +25,8 @@ export default function ConversationsList({
 	unpinnedConversations,
 	pinnedConversations,
 	onMessageSend,
+	removeMessage,
+	resendMessage,
 	onPinStateChange,
 	onConversationNameChange,
 }) {
@@ -39,6 +41,8 @@ export default function ConversationsList({
 				style={ cardStyle }
 				conversation={ conversation }
 				onMessageSend={ onMessageSend }
+				removeMessage={ removeMessage }
+				resendMessage={ resendMessage }
 				onPinStateChange={ onPinStateChange }
 				onConversationNameChange={ onConversationNameChange }
 			/>

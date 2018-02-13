@@ -74,6 +74,7 @@ export default class ConversationCard extends React.Component {
 		this.toggleEditMode = this.toggleEditMode.bind(this)
 		this.editNameKeyPressHandler = this.editNameKeyPressHandler.bind(this)
 		this.editNameChangeHandler = this.editNameChangeHandler.bind(this)
+		this.onMessageRemove = this.onMessageRemove.bind(this)
 	}
 	componentDidMount() {
 		if(this.refs.scrollbars) this.refs.scrollbars.scrollToBottom()
@@ -118,6 +119,17 @@ export default class ConversationCard extends React.Component {
 	editNameChangeHandler(event) {
 		this.setState({ newConversationName: event.target.value })
 	}
+	onMessageRemove(id) {
+		return () => this.props.removeMessage(this.props.conversation.publicKey, id)
+	}
+	onMessageResend(messageId, messageContent) {
+		return () => this.props.resendMessage(
+			this.props.conversation.publicKey,
+			this.props.conversation.keysPair,
+			messageContent,
+			messageId
+		)
+	}
 	render() {
 		const { nameEditMode } = this.state
 		const { style: customStyle, conversation } = this.props
@@ -127,7 +139,14 @@ export default class ConversationCard extends React.Component {
 		const pinnedStateStyle = { filter: pinned ? 'grayscale(0%)' : 'grayscale(100%)' }
 		const messagesList = messages.map(
 			(message, index) =>
-				<Message key={ index } left={ !message.isYours } synced={ message.synced }>
+				<Message
+					key={ index }
+					left={ !message.isYours }
+					synced={ message.synced }
+					error={ message.error }
+					removeMessage={ this.onMessageRemove(message.id) }
+					resendMessage={ this.onMessageResend(message.id, message.text) }
+				>
 					{ transformNewlinesToJSX(message.text) }
 				</Message>
 		)

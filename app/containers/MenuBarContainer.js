@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
 import MenuBar from './../components/MenuBar'
-import { createNewKeyAction, changeMessageSoundOn } from '../actions/index'
+import { changeMessageSoundOn } from '../actions/index'
+import { createNewKeyAction } from '../actions/keysActions'
 
 const mapStateToProps = (state, ownProps) => {
 	return {

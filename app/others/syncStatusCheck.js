@@ -1,4 +1,4 @@
-import { checkMessageSyncStatus } from '../actions/index'
+import { checkMessageSyncStatus } from '../actions/messagesActions'
 
 export const fixNotSyncedMessages = (conversations, dispatch) => {
 	conversations.reduce(

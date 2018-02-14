@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import { fetchMessagesAction } from '../actions/index'
+import { fetchMessagesAction } from '../actions/messagesActions'
 
 let socket = null
 const registeredKeys = []

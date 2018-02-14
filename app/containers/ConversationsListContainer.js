@@ -1,11 +1,7 @@
 import { connect } from 'react-redux'
 import ConversationsList from './../components/ConversationsList'
-import {
-	sendMessageAction,
-	removeMessage,
-	changePinStateAction,
-	changeConversationName,
-} from '../actions/index'
+import { sendMessageAction, removeMessage } from '../actions/messagesActions'
+import { changePinStateAction, changeConversationName } from '../actions/conversationsActions'
 
 const mapStateToProps = (state, ownProps) => {
 	return {

@@ -1,8 +1,17 @@
 import React from 'react'
 import SharedStyles from '../../others/SharedStyles'
 import Switch from 'react-switch'
+import swal from 'sweetalert2'
+import { css } from 'emotion'
 import Colors from '../../others/Colors'
 
+const iconClass = css`
+	border-radius: 0px;
+	.swal2-icon.swal2-warning.swal2-animate-warning-icon {
+		color: #d33;
+		border-color: #d33;
+	}
+`
 const style = {
 	main: {},
 	button: {
@@ -23,16 +32,33 @@ export default class SettingsBox extends React.Component {
 	constructor(props) {
 		super(props)
 		this.messageSoundOnChangeHandler = this.messageSoundOnChangeHandler.bind(this)
+		this.clearAppData = this.clearAppData.bind(this)
 	}
 	messageSoundOnChangeHandler() {
 		this.props.setMessageSoundOn(!this.props.messageSoundOn)
 	}
+	clearAppData() {
+		swal({
+			title: 'Are you sure?',
+			text: 'You won\'t be able to revert this!',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#d33',
+			cancelButtonColor: Colors.mainDark,
+			confirmButtonText: 'Remove all data',
+			customClass: iconClass,
+		}).then((result) => {
+			if (result.value) {
+				this.props.wipeAllData()
+			}
+		})
+	}
 	render() {
-		const { style: customStyle, wipeAppData, messageSoundOn } = this.props
+		const { style: customStyle, messageSoundOn } = this.props
 		return <div style={{ ...style.main, ...customStyle }}>
 			<button
 				style={{ ...style.button }}
-				onClick={ wipeAppData }
+				onClick={ this.clearAppData }
 			>
 				Wipe all app data
 			</button>

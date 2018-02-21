@@ -11,12 +11,20 @@ const style = {
 		textOverflow: 'ellipsis',
 		whiteSpace: 'nowrap',
 		overflow: 'hidden',
+		cursor: 'pointer',
 	},
 }
 const contactToString = ({ name, publicKey }) => `${name} (${publicKey})`
-export default function MatchingContacts({ style: customStyle, contacts, searchText }) {
+export default function MatchingContacts({
+	style: customStyle,
+	contacts,
+	searchText,
+	pinConversation,
+}) {
 	const contactListElements = contacts.map((contact, index) =>
-		<li key={index} style={ style.listItem }>{ contactToString(contact) }</li>
+		<li key={index} style={ style.listItem } onClick={() => pinConversation(contact.publicKey)}>
+			{ contactToString(contact) }
+		</li>
 	)
 	const listDisplayMode = contacts.length > 0 ? 'block' : 'none'
 	const resultText = contacts.length > 0

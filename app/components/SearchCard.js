@@ -51,6 +51,12 @@ export default class SearchCard extends React.Component {
 		this.onSearchButtonClick = this.onSearchButtonClick.bind(this)
 		this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
 		this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
+		this.pinConversation = this.pinConversation.bind(this)
+	}
+	pinConversation(publicKey) {
+		this.resetSearchResults()
+		this.props.onPinStateChange(publicKey, false)
+		this.props.onPinStateChange(publicKey, true)
 	}
 	search(searchText) {
 		const isValidKey = searchText.length === 392
@@ -59,8 +65,7 @@ export default class SearchCard extends React.Component {
 				.map(({ publicKey }) => publicKey)
 				.includes(searchText)
 			if(isExistingContact) {
-				this.props.onPinStateChange(searchText, true)
-				this.resetSearchResults()
+				this.pinConversation(searchText)
 			} else {
 				this.setState({
 					searchResult: { newConversationKey: searchText },
@@ -74,8 +79,7 @@ export default class SearchCard extends React.Component {
 			})
 			const exactResult = matchingContacts.find(contact => contact.name === searchText)
 			if(exactResult !== undefined) {
-				this.props.onPinStateChange(exactResult.publicKey, true)
-				this.resetSearchResults()
+				this.pinConversation(exactResult.publicKey)
 			} else {
 				this.setState({
 					searchResult: { contacts: matchingContacts, searchText },
@@ -130,6 +134,7 @@ export default class SearchCard extends React.Component {
 					contacts={ searchResult.contacts }
 					searchText={ searchResult.searchText }
 					style={ style.searchResults }
+					pinConversation={ this.pinConversation }
 				/>
 				: <NewConversation
 					publicKey={ searchResult.newConversationKey }

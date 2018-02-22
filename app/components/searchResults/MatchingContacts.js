@@ -1,19 +1,20 @@
 import React from 'react'
+import { css } from 'emotion'
 
-const style = {
-	main: {
-		
-	},
-	resultText: {
-		fontWeight: 'bold',
-	},
-	listItem: {
-		textOverflow: 'ellipsis',
-		whiteSpace: 'nowrap',
-		overflow: 'hidden',
-		cursor: 'pointer',
-	},
-}
+const mainClass = css`
+	& .resultText {
+		font-weight: bold
+	}
+	& .listItem {
+		text-overflow: ellipsis
+		white-space: nowrap
+		overflow: hidden
+		cursor: pointer
+		&:hover {
+			text-decoration: underline
+		}
+	}
+`
 const contactToString = ({ name, publicKey }) => `${name} (${publicKey})`
 export default function MatchingContacts({
 	style: customStyle,
@@ -22,7 +23,11 @@ export default function MatchingContacts({
 	pinConversation,
 }) {
 	const contactListElements = contacts.map((contact, index) =>
-		<li key={index} style={ style.listItem } onClick={() => pinConversation(contact.publicKey)}>
+		<li
+			key={index}
+			className="listItem"
+			onClick={() => pinConversation(contact.publicKey)}
+		>
 			{ contactToString(contact) }
 		</li>
 	)
@@ -30,8 +35,8 @@ export default function MatchingContacts({
 	const resultText = contacts.length > 0
 		? `Search results for "${searchText}"`
 		: `"${searchText}" does not match any of your contacts and it is not a valid key.`
-	return <div style={{ ...style.main, ...customStyle }}>
-		<p style={ style.resultText }> { resultText } </p>
+	return <div className={ mainClass } style={ customStyle }>
+		<p className="resultText"> { resultText } </p>
 		<ul style={{ display: listDisplayMode }}>
 			{ contactListElements }
 		</ul>

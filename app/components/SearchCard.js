@@ -1,9 +1,9 @@
 import React from 'react'
 import Card from './Card'
-import Autosuggest from 'react-autosuggest'
 import SharedStyles from '../others/SharedStyles'
 import MatchingContacts from './searchResults/MatchingContacts'
 import NewConversation from './searchResults/NewConversation'
+import AutosuggestConversationInput from './AutosuggestConversationInput'
 
 const style = {
 	main: {},
@@ -27,36 +27,33 @@ const style = {
 		marginTop: '15px',
 	},
 }
-const getSuggestionValue = suggestion => suggestion
-const renderSuggestion = suggestion => <div>{suggestion}</div>
-const getSuggestions = (value, contacts) => {
-	const inputValue = value.trim().toLowerCase()
-	const inputLength = inputValue.length
-	return inputLength === 0 ? [] : contacts.map(contact => contact.name).filter(contact =>
-		contact.toLowerCase().slice(0, inputLength) === inputValue
-	)
-}
+
 export default class SearchCard extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			value: '',
-			suggestions: [],
 			searchResult: null,
 		}
-		this.search = this.search.bind(this)
+		
 		this.messageSendHandler = this.messageSendHandler.bind(this)
-		this.onChange = this.onChange.bind(this)
-		this.onKeyPress = this.onKeyPress.bind(this)
 		this.onSearchButtonClick = this.onSearchButtonClick.bind(this)
-		this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
-		this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
 		this.pinConversation = this.pinConversation.bind(this)
+		this.search = this.search.bind(this)
 	}
 	pinConversation(publicKey) {
 		this.resetSearchResults()
 		this.props.onPinStateChange(publicKey, false)
 		this.props.onPinStateChange(publicKey, true)
+	}
+	resetSearchResults() {
+		this.setState({ searchResult: null, value: '' })
+	}
+	messageSendHandler(publicKey, message) {
+		this.resetSearchResults()
+		this.props.onMessageSend(publicKey, message)
+	}
+	onSearchButtonClick() {
+		this.search(this.state.value)
 	}
 	search(searchText) {
 		const isValidKey = searchText.length === 392
@@ -87,46 +84,9 @@ export default class SearchCard extends React.Component {
 			}
 		}
 	}
-	resetSearchResults() {
-		this.setState({ searchResult: null, value: '' })
-	}
-	messageSendHandler(publicKey, message) {
-		this.resetSearchResults()
-		this.props.onMessageSend(publicKey, message)
-	}
-	onChange(event, { newValue }) {
-		this.setState({
-			value: newValue,
-		})
-	}
-	onKeyPress(event) {
-		if(event.key === 'Enter') {
-			this.search(this.state.value)
-		}
-	}
-	onSearchButtonClick() {
-		this.search(this.state.value)
-	}
-	onSuggestionsFetchRequested({ value }) {
-		const { contacts } = this.props
-		this.setState({
-			suggestions: getSuggestions(value, contacts),
-		})
-	}
-	onSuggestionsClearRequested() {
-		this.setState({
-			suggestions: [],
-		})
-	}
 	render() {
-		const { value, suggestions, searchResult } = this.state
-		const { style: customStyle } = this.props
-		const inputProps = {
-			placeholder: 'Type public key or name',
-			value,
-			onChange: this.onChange,
-			onKeyPress: this.onKeyPress,
-		}
+		const { searchResult } = this.state
+		const { style: customStyle, contacts } = this.props
 		const resultElement = searchResult === null
 			? ''
 			: searchResult.contacts !== undefined
@@ -149,14 +109,7 @@ export default class SearchCard extends React.Component {
 				</button>
 				*/ }
 				<div style={ style.autosuggestWrapper }>
-					<Autosuggest
-						suggestions={suggestions}
-						onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-						onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-						getSuggestionValue={getSuggestionValue}
-						renderSuggestion={renderSuggestion}
-						inputProps={inputProps}
-					/>
+					<AutosuggestConversationInput {...{ contacts, search: this.search }} />
 				</div>
 				<button style={ style.button } onClick={ this.onSearchButtonClick }>
 					<i className="fas fa-search"></i>

@@ -44,6 +44,7 @@ export default class SearchCard extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			searchText: '',
 			searchResult: null,
 		}
 		
@@ -51,6 +52,7 @@ export default class SearchCard extends React.Component {
 		this.onSearchButtonClick = this.onSearchButtonClick.bind(this)
 		this.pinConversation = this.pinConversation.bind(this)
 		this.search = this.search.bind(this)
+		this.onSearchTextChange = this.onSearchTextChange.bind(this)
 	}
 	pinConversation(publicKey) {
 		this.resetSearchResults()
@@ -58,16 +60,22 @@ export default class SearchCard extends React.Component {
 		this.props.onPinStateChange(publicKey, true)
 	}
 	resetSearchResults() {
-		this.setState({ searchResult: null, value: '' })
+		this.setState({ searchResult: null, searchText: '' })	//TODO value does not exist
 	}
 	messageSendHandler(publicKey, message) {
 		this.resetSearchResults()
 		this.props.onMessageSend(publicKey, message)
 	}
 	onSearchButtonClick() {
-		this.search(this.state.value)
+		this.search(this.state.searchText)
+	}
+	onSearchTextChange(event, { newValue }) {
+		this.setState({ searchText: newValue })
 	}
 	search(searchText) {
+		if(searchText.trim() === '') {
+			return
+		}
 		if(matchesKeyFormat(searchText)) {
 			contactExists(searchText, this.props.contacts)
 				? this.pinConversation(searchText)
@@ -85,7 +93,7 @@ export default class SearchCard extends React.Component {
 		}
 	}
 	render() {
-		const { searchResult } = this.state
+		const { searchText, searchResult } = this.state
 		const { style: customStyle, contacts } = this.props
 		const resultElement = searchResult === null
 			? ''
@@ -104,7 +112,12 @@ export default class SearchCard extends React.Component {
 		return <Card style={{ ...style.main, ...customStyle }}>
 			<div style={ style.searchPanel }>
 				<div style={ style.autosuggestWrapper }>
-					<AutosuggestConversationInput {...{ contacts, search: this.search }} />
+					<AutosuggestConversationInput {...{
+						contacts,
+						search: this.search,
+						onChange: this.onSearchTextChange,
+						value: searchText,
+					}} />
 				</div>
 				<button style={ style.button } onClick={ this.onSearchButtonClick }>
 					<i className="fas fa-search"></i>

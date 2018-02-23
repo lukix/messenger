@@ -14,10 +14,8 @@ export default class AutosuggestConversationInput extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			value: '',
 			suggestions: [],
 		}
-		this.onChange = this.onChange.bind(this)
 		this.onKeyPress = this.onKeyPress.bind(this)
 		this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this)
 		this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this)
@@ -33,22 +31,17 @@ export default class AutosuggestConversationInput extends React.Component {
 			suggestions: [],
 		})
 	}
-	onChange(event, { newValue }) {
-		this.setState({
-			value: newValue,
-		})
-	}
 	onKeyPress(event) {
 		if(event.key === 'Enter') {
-			this.props.search(this.state.value)
+			this.props.search(this.props.value)
 		}
 	}
 	render() {
-		const { value, suggestions } = this.state
+		const { suggestions } = this.state
 		const inputProps = {
 			placeholder: 'Type public key or name',
-			value,
-			onChange: this.onChange,
+			value: this.props.value,
+			onChange: this.props.onChange,
 			onKeyPress: this.onKeyPress,
 		}
 		return <Autosuggest

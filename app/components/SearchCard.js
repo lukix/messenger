@@ -27,7 +27,19 @@ const style = {
 		marginTop: '15px',
 	},
 }
-
+const matchesKeyFormat = (searchText) => searchText.length === 392
+const contactExists = (key, contacts) => (
+	contacts
+		.map(({ publicKey }) => publicKey)
+		.includes(key)
+)
+const findMatchingContacts = (searchText, contacts) => (
+	contacts
+		.filter(function hasSameBegining(contact) {
+			const contactBegining = contact.name.substr(0, searchText.length)
+			return contactBegining.toLowerCase() === searchText.toLowerCase()
+		})
+)
 export default class SearchCard extends React.Component {
 	constructor(props) {
 		super(props)
@@ -56,30 +68,18 @@ export default class SearchCard extends React.Component {
 		this.search(this.state.value)
 	}
 	search(searchText) {
-		const isValidKey = searchText.length === 392
-		if(isValidKey) {
-			const isExistingContact = this.props.contacts
-				.map(({ publicKey }) => publicKey)
-				.includes(searchText)
-			if(isExistingContact) {
-				this.pinConversation(searchText)
-			} else {
-				this.setState({
-					searchResult: { newConversationKey: searchText },
-				})
-			}
+		if(matchesKeyFormat(searchText)) {
+			contactExists(searchText, this.props.contacts)
+				? this.pinConversation(searchText)
+				: this.setState({ searchResult: { newConversationKey: searchText } })
 		} else {
-			const matchingContacts = this.props.contacts.filter(function hasSameBegining(contact) {
-				const str1 = contact.name.substr(0, searchText.length).toLowerCase()
-				const str2 = searchText.toLowerCase()
-				return str1 === str2
-			})
-			const exactResult = matchingContacts.find(contact => contact.name === searchText)
+			const matchingResults = findMatchingContacts(searchText, this.props.contacts)
+			const exactResult = matchingResults.find(contact => contact.name === searchText)
 			if(exactResult !== undefined) {
 				this.pinConversation(exactResult.publicKey)
 			} else {
 				this.setState({
-					searchResult: { contacts: matchingContacts, searchText },
+					searchResult: { contacts: matchingResults, searchText },
 				})
 			}
 		}
@@ -103,11 +103,6 @@ export default class SearchCard extends React.Component {
 				/>
 		return <Card style={{ ...style.main, ...customStyle }}>
 			<div style={ style.searchPanel }>
-				{ /*
-				<button style={ style.button }>
-					<i className="fas fa-user"></i>
-				</button>
-				*/ }
 				<div style={ style.autosuggestWrapper }>
 					<AutosuggestConversationInput {...{ contacts, search: this.search }} />
 				</div>

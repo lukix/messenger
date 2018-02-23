@@ -60,7 +60,7 @@ export default class SearchCard extends React.Component {
 		this.props.onPinStateChange(publicKey, true)
 	}
 	resetSearchResults() {
-		this.setState({ searchResult: null, searchText: '' })	//TODO value does not exist
+		this.setState({ searchResult: null, searchText: '' })
 	}
 	messageSendHandler(publicKey, message) {
 		this.resetSearchResults()
@@ -74,6 +74,7 @@ export default class SearchCard extends React.Component {
 	}
 	search(searchText) {
 		if(searchText.trim() === '') {
+			this.resetSearchResults()
 			return
 		}
 		if(matchesKeyFormat(searchText)) {

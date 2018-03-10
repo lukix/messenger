@@ -6,6 +6,7 @@ import {
 	START_ADDING_CONVERSATION,
 	FINISH_ADDING_CONVERSATION,
 	CHANGE_CONVERSATION_NAME,
+	FIRE_CONVERSATION_FLASH_ANIMATION,
 } from '../actionTypes/index'
 
 export const startCreatingNewConversation = (publicKey) => ({
@@ -42,4 +43,9 @@ export const changeConversationName = (publicKey, newName) => ({
 	type: CHANGE_CONVERSATION_NAME,
 	publicKey,
 	newName,
+})
+export const fireFlashAnimation = (publicKey, animationId) => ({
+	type: FIRE_CONVERSATION_FLASH_ANIMATION,
+	publicKey,
+	animationId,
 })

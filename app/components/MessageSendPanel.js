@@ -15,6 +15,7 @@ const style = {
 		padding: '8px 8px',
 		resize: 'none',
 		marginRight: '8px',
+		background: 'none',
 	},
 	button: {
 		...SharedStyles.button,

@@ -1,4 +1,5 @@
 import React from 'react'
+import { css, keyframes } from 'react-emotion'
 import Card from './Card'
 import SharedStyles from '../others/SharedStyles'
 import Message from './Message'
@@ -7,6 +8,20 @@ import { PulseLoader } from 'react-spinners'
 import MessageSendPanel from './MessageSendPanel'
 import Colors from '../others/Colors'
 
+const flashAnimation = keyframes`
+	from {
+		outline-color: transparent
+		background-color: white
+	}
+	50% {
+		outline-color: ${ Colors.mainDark }
+		background-color: #F2F0F4
+	}
+	to {
+		outline-color: transparent
+		background-color: white
+	}
+`
 const style = {
 	main: {},
 	loadingCard: {
@@ -58,6 +73,10 @@ const style = {
 		marginLeft: '10px',
 	},
 }
+const animationClass = css`
+	outline: 3px solid transparent
+	animation: ${ flashAnimation } 0.6s ease infinite;
+`
 const transformNewlinesToJSX = (str) => str.split('\n').map(
 	(item, key) => <span key={key}>{item}<br/></span>
 )
@@ -68,6 +87,8 @@ export default class ConversationCard extends React.Component {
 			scrollToBottomFlag: false,
 			nameEditMode: false,
 			newConversationName: this.props.conversation.name,
+			useAnimationClass: false,
+			flashAnimationTimer: null,
 		}
 		this.messageSendHandler = this.messageSendHandler.bind(this)
 		this.pinStateChangeHandler = this.pinStateChangeHandler.bind(this)
@@ -88,6 +109,16 @@ export default class ConversationCard extends React.Component {
 	componentWillReceiveProps(newProps) {
 		if(newProps.conversation.messages.length > this.props.conversation.messages.length) {
 			this.setState({ scrollToBottomFlag: true })
+		}
+		if(newProps.conversation.animationId !== this.props.conversation.animationId) {
+			clearTimeout(this.state.flashAnimationTimer)
+			this.setState({ useAnimationClass: false }, () => {
+				setTimeout(() => { this.setState({ useAnimationClass: true }) }, 0)
+				const flashAnimationTimer = setTimeout(() => {
+					this.setState({ useAnimationClass: false })
+				}, 1200)
+				this.setState({ flashAnimationTimer })
+			})
 		}
 	}
 	messageSendHandler(message) {
@@ -131,7 +162,7 @@ export default class ConversationCard extends React.Component {
 		)
 	}
 	render() {
-		const { nameEditMode } = this.state
+		const { nameEditMode, useAnimationClass } = this.state
 		const { style: customStyle, conversation } = this.props
 		const { name: contactName, publicKey: contactKey, messages, pinned, 
 			keysPair } = conversation
@@ -167,7 +198,10 @@ export default class ConversationCard extends React.Component {
 				loading={ true }
 			/>
 		</Card>
-		const normalCard = <Card style={{ ...style.main, ...customStyle }}>
+		const normalCard = <Card
+			style={{ ...style.main, ...customStyle }}
+			className={ useAnimationClass ? animationClass : '' }
+		>
 			<header style={ style.header }>
 				{
 					nameEditMode

@@ -35,9 +35,9 @@ export default function ConversationsList({
 		...unpinnedConversations.sort(conversationComparisonByDate),
 	]
 	const conversationsList = conversations.map(
-		(conversation, index) =>
+		(conversation) =>
 			<ConversationCard
-				key={ index }
+				key={ conversation.publicKey }
 				style={ cardStyle }
 				conversation={ conversation }
 				onMessageSend={ onMessageSend }

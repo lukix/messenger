@@ -8,6 +8,7 @@ import {
 	CHANGE_PIN_STATE,
 	CHANGE_CONVERSATION_NAME,
 	REMOVE_MESSAGE,
+	FIRE_CONVERSATION_FLASH_ANIMATION,
 } from '../actionTypes/index'
 
 const createConversation = (publicKey, keysPair) => ({
@@ -137,6 +138,15 @@ const conversationsReducer = (conversations = [], action) => {
 			return conversations.map((conversation) => {
 				return conversation.publicKey === action.publicKey
 					?	Object.assign({}, conversation, { name: action.newName })
+					: conversation
+			})
+		case FIRE_CONVERSATION_FLASH_ANIMATION:
+			return conversations.map((conversation) => {
+				return conversation.publicKey === action.publicKey
+					?	{
+						...conversation,
+						animationId: action.animationId,
+					}
 					: conversation
 			})
 		default:

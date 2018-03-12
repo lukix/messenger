@@ -48,9 +48,7 @@ export default function ConversationsList({
 				onConversationNameChange={ onConversationNameChange }
 			/>
 	)
-	return <div style={{ ...style.main, ...customStyle }}>
-		<FlipMove>
-			{ conversationsList }
-		</FlipMove>
-	</div>
+	return <FlipMove style={{ ...style.main, ...customStyle }}>
+		{ conversationsList }
+	</FlipMove>
 }

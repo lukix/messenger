@@ -1,4 +1,5 @@
 import React from 'react'
+import FlipMove from 'react-flip-move'
 import ConversationCard from './ConversationCard'
 
 const style = {
@@ -48,6 +49,8 @@ export default function ConversationsList({
 			/>
 	)
 	return <div style={{ ...style.main, ...customStyle }}>
-		{ conversationsList }
+		<FlipMove>
+			{ conversationsList }
+		</FlipMove>
 	</div>
 }

@@ -167,7 +167,11 @@ export default class ConversationCard extends React.Component {
 		const { name: contactName, publicKey: contactKey, messages, pinned, 
 			keysPair } = conversation
 		const conversationName = contactName ? contactName : contactKey
-		const pinnedStateStyle = { filter: pinned ? 'grayscale(0%)' : 'grayscale(100%)' }
+		const pinnedStateStyle = {
+			filter: pinned
+				? 'grayscale(0%) brightness(0.5) saturate(3)'
+				: 'grayscale(100%)',
+		}
 		const messagesList = messages.map(
 			(message, index) =>
 				<Message

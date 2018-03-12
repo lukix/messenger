@@ -1,26 +1,31 @@
 import React from 'react'
 import Colors from '../others/Colors'
+import Linkify from 'react-linkify'
+import { css } from 'react-emotion'
 
-const style = {
-	main: {
-		margin: '5px 0',
-		display: 'flex',
-		flexDirection: 'column',
-		color: Colors.mainDark,
-		border: `solid ${Colors.mainDark}`,
-		borderWidth: '0',
-	},
-	inner: {
-		background: Colors.mainDark,
-		color: 'white',
-		borderRadius: '6px',
-		textAlign: 'left',
-		padding: '5px 10px',
-		width: 'auto',
-		maxWidth: 'calc(100% - 50px)',
-		display: 'inline-block',
-	},
-}
+const mainClass = css`
+	margin: 5px 0
+	display: flex
+	flex-direction: column
+	color: ${Colors.mainDark}
+	border: solid ${Colors.mainDark}
+	border-width: 0
+	.inner {
+		background: ${Colors.mainDark}
+		color: white
+		border-radius: 6px
+		text-align: left
+		padding: 5px 10px
+		width: auto
+		max-width: calc(100% - 50px)
+		display: inline-block
+	}
+	.content {
+		a {
+			color: white
+		}
+	}
+`
 export default function Message({ style: customStyle, children, left, synced,
 	error, removeMessage, resendMessage }) {
 	const alignItems = left ? 'flex-start' : 'flex-end'
@@ -49,9 +54,9 @@ export default function Message({ style: customStyle, children, left, synced,
 				<i style={{ color: '#b44' }} className="fas fa-ban"></i> Discard
 			</span>
 		</div>
-	return <div style={{ ...style.main, alignItems, ...errorStyles, ...customStyle }}>
-		<div style={{ ...style.inner, ...borderRadius, opacity: synced ? 1 : 0.7 }}>
-			{ children }
+	return <div className={ mainClass } style={{ alignItems, ...errorStyles, ...customStyle }}>
+		<div className="inner" style={{ ...borderRadius, opacity: synced ? 1 : 0.7 }}>
+			<Linkify className="content">{ children }</Linkify>
 		</div>
 		{ errorInfo }
 		{ errorActions }

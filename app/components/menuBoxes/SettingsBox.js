@@ -49,7 +49,7 @@ export default class SettingsBox extends React.Component {
 			customClass: iconClass,
 		}).then((result) => {
 			if (result.value) {
-				this.props.wipeAllData()
+				this.props.wipeAppData()
 			}
 		})
 	}
@@ -69,14 +69,10 @@ export default class SettingsBox extends React.Component {
 					onChange={ this.messageSoundOnChangeHandler }
 					onColor={ Colors.mainDark }
 					onHandleColor={ Colors.mainLight }
-					//uncheckedIcon={ true }
-					//checkedIcon={ true }
 					handleDiameter={ 30 }
-					//boxShadow="0px 1px 5px rgba(255, 255, 255, 0.6)"
 					activeBoxShadow="0px 0px 1px 10px rgba(255, 255, 255, 0.2)"
 					height={ 30 }
 					width={ 64 }
-					//className="react-switch"
 					id="material-switch"
 				/>
 			</label>

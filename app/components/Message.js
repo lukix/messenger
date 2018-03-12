@@ -2,6 +2,7 @@ import React from 'react'
 import Colors from '../others/Colors'
 import Linkify from 'react-linkify'
 import { css } from 'react-emotion'
+import PropTypes from 'prop-types'
 
 const mainClass = css`
 	margin: 5px 0
@@ -61,4 +62,19 @@ export default function Message({ style: customStyle, children, left, synced,
 		{ errorInfo }
 		{ errorActions }
 	</div>
+}
+
+Message.propTypes = {
+	style: PropTypes.object,
+	children: PropTypes.node.isRequired,
+	left: PropTypes.bool.isRequired,
+	synced: PropTypes.bool,
+	error: PropTypes.bool,
+	removeMessage: PropTypes.func.isRequired,
+	resendMessage: PropTypes.func.isRequired,
+}
+Message.defaultProps = {
+	style: {},
+	synced: true,
+	error: false,
 }

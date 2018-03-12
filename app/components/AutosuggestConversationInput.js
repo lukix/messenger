@@ -1,5 +1,6 @@
 import React from 'react'
 import Autosuggest from 'react-autosuggest'
+import PropTypes from 'prop-types'
 
 const getSuggestionValue = suggestion => suggestion
 const renderSuggestion = suggestion => <div>{suggestion}</div>
@@ -39,7 +40,7 @@ export default class AutosuggestConversationInput extends React.Component {
 	render() {
 		const { suggestions } = this.state
 		const inputProps = {
-			placeholder: 'Type public key or name',
+			placeholder: this.props.placeholder,
 			value: this.props.value,
 			onChange: this.props.onChange,
 			onKeyPress: this.onKeyPress,
@@ -53,4 +54,15 @@ export default class AutosuggestConversationInput extends React.Component {
 			inputProps={inputProps}
 		/>
 	}
+}
+
+AutosuggestConversationInput.propTypes = {
+	contacts: PropTypes.arrayOf(PropTypes.shape({ name: PropTypes.string })),
+	search: PropTypes.func.isRequired,
+	value: PropTypes.string,
+	onChange: PropTypes.func,
+	placeholder: PropTypes.string,
+}
+AutosuggestConversationInput.defaultProps = {
+	style: {},
 }

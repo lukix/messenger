@@ -118,6 +118,7 @@ export default class SearchCard extends React.Component {
 						search: this.search,
 						onChange: this.onSearchTextChange,
 						value: searchText,
+						placeholder: 'Type public key or name',
 					}} />
 				</div>
 				<button style={ style.button } onClick={ this.onSearchButtonClick }>

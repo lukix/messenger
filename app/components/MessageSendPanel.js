@@ -1,6 +1,7 @@
 import React from 'react'
 import SharedStyles from '../others/SharedStyles'
 import TextareaAutosize from 'react-autosize-textarea'
+import PropTypes from 'prop-types'
 
 const style = {
 	main: {
@@ -65,4 +66,12 @@ export default class MessageSendPanel extends React.Component {
 			</button>
 		</div>
 	}
+}
+
+MessageSendPanel.propTypes = {
+	style: PropTypes.object,
+	onMessageSend: PropTypes.func.isRequired,
+}
+MessageSendPanel.defaultProps = {
+	style: {},
 }

@@ -72,24 +72,23 @@ const processVerifiedMessage = (dispatch, getState, message, keysPair) => {
 }
 export const fetchMessagesAction = (keysPair, startDate) => {
 	return function (dispatch, getState) {
-		//dispatch(startFetchingMessages(publicKey))
 		return axios.get(
 			'/messages',
 			{ params: { recieverAddress: keysPair.publicKey, startDate } }
 		)
-			.then(({ data: encryptedMessages }) => {
-				return Promise.all(encryptedMessages.map(
+			.then(({ data: encryptedMessages }) => (
+				Promise.all(encryptedMessages.map(
 					message => decryptMessage(keysPair.privateKey, decodeMessage(message))
 				))
-					.then(messages => {
-						const verifiedMessages = messages.filter(({ verified }) => verified)
-						const unverifiedMessagesCount = messages.length - verifiedMessages.length
-						if(unverifiedMessagesCount > 0)
-							console.log(`${ unverifiedMessagesCount } unverified messages`)
-						verifiedMessages.forEach(
-							message => processVerifiedMessage(dispatch, getState, message, keysPair)
-						)
-					})
+			))
+			.then(messages => {
+				const verifiedMessages = messages.filter(({ verified }) => verified)
+				const unverifiedMessagesCount = messages.length - verifiedMessages.length
+				if(unverifiedMessagesCount > 0)
+					console.log(`${ unverifiedMessagesCount } unverified messages`)
+				verifiedMessages.forEach(
+					message => processVerifiedMessage(dispatch, getState, message, keysPair)
+				)
 			})
 			.catch(error => {
 				console.log(error)
@@ -98,17 +97,17 @@ export const fetchMessagesAction = (keysPair, startDate) => {
 	}
 }
 export const checkMessageSyncStatus = (recieverAddress, startDate, clientGeneratedId ) => {
-	return function (dispatch, getState) {
+	return function (dispatch) {
 		return axios.get(
 			'/messages',
 			{ params: { recieverAddress, startDate, clientGeneratedId } }
 		)
 			.then(({ data: encryptedMessages }) => {
-				if(encryptedMessages.length > 0) {
-					dispatch(finishSendingMessage(recieverAddress, clientGeneratedId))
-				} else {
-					dispatch(sendingMessageError(recieverAddress, clientGeneratedId))
-				}
+				dispatch(
+					encryptedMessages.length > 0
+						? finishSendingMessage(recieverAddress, clientGeneratedId)
+						: sendingMessageError(recieverAddress, clientGeneratedId)
+				)
 			})
 			.catch(error => {
 				console.log(error)

@@ -2,7 +2,9 @@ import React from 'react'
 import Colors from '../others/Colors'
 import Linkify from 'react-linkify'
 import { css } from 'react-emotion'
+import ReactTooltip from 'react-tooltip'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
 const mainClass = css`
 	margin: 5px 0
@@ -28,7 +30,7 @@ const mainClass = css`
 	}
 `
 export default function Message({ style: customStyle, children, left, synced,
-	error, removeMessage, resendMessage }) {
+	error, removeMessage, resendMessage, date }) {
 	const alignItems = left ? 'flex-start' : 'flex-end'
 	const borderRadius = left ? { borderTopLeftRadius: '0px' } : { borderTopRightRadius: '0px' }
 	const errorStyles = error
@@ -55,10 +57,28 @@ export default function Message({ style: customStyle, children, left, synced,
 				<i style={{ color: '#b44' }} className="fas fa-ban"></i> Discard
 			</span>
 		</div>
+	const opacity = synced ? 1 : 0.7
+	const messageDate = moment(date).calendar(null, {
+		sameDay: '[Today], HH:mm:ss',
+		lastDay: '[Yesterday], HH:mm:ss',
+		sameElse: 'MMM Do YYYY, HH:mm:ss',
+	})
+	const tooltipId = 'date-' + moment(date).format()
+	const tooltipPlace = left ? 'left' : 'right'
 	return <div className={ mainClass } style={{ alignItems, ...errorStyles, ...customStyle }}>
-		<div className="inner" style={{ ...borderRadius, opacity: synced ? 1 : 0.7 }}>
+		<div
+			data-tip
+			data-for={ date ? tooltipId : undefined }
+			data-event="mouseover"
+			data-event-off="mouseout click"
+			className="inner"
+			style={{ ...borderRadius, opacity }}
+		>
 			<Linkify className="content">{ children }</Linkify>
 		</div>
+		<ReactTooltip id={ tooltipId } place={ tooltipPlace } type="dark" effect="solid">
+			<span>{ messageDate }</span>
+		</ReactTooltip>
 		{ errorInfo }
 		{ errorActions }
 	</div>
@@ -72,6 +92,7 @@ Message.propTypes = {
 	error: PropTypes.bool,
 	removeMessage: PropTypes.func.isRequired,
 	resendMessage: PropTypes.func.isRequired,
+	date: PropTypes.instanceOf(Date),
 }
 Message.defaultProps = {
 	style: {},

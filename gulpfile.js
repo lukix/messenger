@@ -112,7 +112,7 @@ function bundleApp() {
 		debug: true,
 	})
 		.transform('babelify', {
-			presets: ['es2015'],
+			presets: ['env'],
 			plugins: [
 				'transform-react-jsx',
 				'transform-object-rest-spread',

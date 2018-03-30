@@ -52,14 +52,17 @@ export default function App() {
 		...(matches ? {} : { lineHeight: '10px' } ),
 		fontSize: matches ? '2rem' : '1.3rem',
 	})
-	const versionName = ''
+	const versionName = 'Alpha'
+	const versionDisclosure = `Version ${versionName}. Some problems may occur.`
 	return <div style={ style.main }>
 		<MenuBarContainer />
 		<MediaQuery minDeviceWidth={500}>
 			{ (matches) => <h1 style={ titleStyles(matches) }>
 				Messenger
 				{ matches ? '' : <br /> }
-				<sub style={ versionNameStyles(matches) }>{ versionName }</sub>
+				<sub style={ versionNameStyles(matches) } title={versionDisclosure}>
+					{ versionName }
+				</sub>
 			</h1> }
 		</MediaQuery>
 

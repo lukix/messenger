@@ -16,6 +16,7 @@ module.exports = {
     "plugins": [
         "react",
     ],
+    "globals": { "CONFIG": false },
     "rules": {
         "react/jsx-uses-react": "error",
         "react/jsx-uses-vars": "error",

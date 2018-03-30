@@ -7,7 +7,7 @@
     "start": "npm-run-all build server",
     "watch": "gulp",
     "build": "gulp build",
-    "server": "http-server ./build -p 80 -d false -g true --silent -c-1",
+    "server": "http-server ./build -p 80 -d false -g true --silent",
     "test": "mocha --require babel-core/register"
   },
   "author": "Łukasz Jenczmyk",

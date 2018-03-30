@@ -118,9 +118,16 @@ function onFileChange(vinyl) {
 
 function bundleApp() {
 	const isProduction = process.env.NODE_ENV === 'production'
+	const globalVars = {
+		CONFIG: () => JSON.stringify({
+			apiUrl: process.env.API_URL || 'http://localhost:8080/api/',
+			socketServerUrl: process.env.SOCKET_URL || 'http://localhost:8080',
+		}),
+	}
 	return browserify({
 		entries: `${srcDir}/${entryFileName}`,
 		debug: true,
+		insertGlobalVars: globalVars,
 	})
 		.transform('babelify', {
 			presets: ['env'],

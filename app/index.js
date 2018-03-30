@@ -29,7 +29,7 @@ import { fixNotSyncedMessages } from './others/syncStatusCheck'
 	)
 	store.subscribe(() => statePersistence.saveState(store.getState()))
 	fixNotSyncedMessages(store.getState().conversations, store.dispatch)
-	initSockets(store, 'http://localhost:8080')
+	initSockets(store, CONFIG.socketServerUrl)
 	fetchNewMessages(store)
 
 	const Root = ({ store }) => (

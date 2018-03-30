@@ -9,6 +9,9 @@ const watch = require('gulp-watch')
 const colors = require('colors/safe')
 const gulpCopy = require('gulp-copy')
 const browserSync = require('browser-sync').create()
+const buffer = require('vinyl-buffer')
+const minify = require('gulp-minify')
+const gulpif = require('gulp-if')
 
 //Paths
 const srcDir = './app'
@@ -17,7 +20,7 @@ const bundleFileName = 'bundle.js'
 const entryFileName = 'index.js'
 
 //Create reloader instance
-const browserReload = createBrowserReloader()
+const { reload: browserReload, enable: enableBrowserReload } = createBrowserReloader()
 
 // Gulp tasks
 gulp.task('copy', () => {
@@ -55,30 +58,37 @@ gulp.task('clean', () => {
 })
 
 gulp.task('build', () => {
-	return gulpSequence('clean', ['scripts', 'copy', 'copyBower'], () => {})
+	return gulpSequence('clean', ['scripts', 'copy', 'copyBower'], () => { })
 })
 
 gulp.task('default', () => {
-	return gulpSequence('build', 'watch', () => {})
+	enableBrowserReload()
+	return gulpSequence('build', 'watch', () => { })
 })
 
 // Private Functions
 function createBrowserReloader() {
+	let enabled = false
 	let initialized = false
-	return function reload() {
-		if(initialized) {
-			browserSync.reload()
-		} else {
-			browserSync.init({
-				server: {
-					baseDir: destDir,
-				},
-				logLevel: 'silent',
-				port: 3000,
-				notify: false,
-			})
-			initialized = true
-		}
+	return {
+		enable: () => {
+			enabled = true
+		},
+		reload: () => {
+			if (initialized) {
+				browserSync.reload()
+			} else if (enabled) {
+				browserSync.init({
+					server: {
+						baseDir: destDir,
+					},
+					logLevel: 'silent',
+					port: 3000,
+					notify: false,
+				})
+				initialized = true
+			}
+		},
 	}
 }
 
@@ -107,6 +117,7 @@ function onFileChange(vinyl) {
 }
 
 function bundleApp() {
+	const isProduction = process.env.NODE_ENV === 'production'
 	return browserify({
 		entries: `${srcDir}/${entryFileName}`,
 		debug: true,
@@ -122,7 +133,7 @@ function bundleApp() {
 		})
 		.bundle()
 		.on('error', (e) => {
-			if(e.codeFrame) {
+			if (e.codeFrame) {
 				console.log(e.toString())
 				console.log(e.codeFrame)
 			} else {
@@ -130,5 +141,15 @@ function bundleApp() {
 			}
 		})
 		.pipe(source(bundleFileName))
+		.pipe(gulpif(isProduction, buffer()))
+		.pipe(gulpif(isProduction, minify({
+			ext: {
+				src: '-debug.js',
+				min: '.js',
+			},
+			noSource: true,
+			exclude: ['tasks'],
+			ignoreFiles: ['.combo.js', '-min.js'],
+		})))
 		.pipe(gulp.dest(destDir))
 }

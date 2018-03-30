@@ -6,7 +6,5 @@
     "Łukasz Jenczmyk"
   ],
   "license": "ISC",
-  "dependencies": {
-    "components-font-awesome": "5.0.6"
-  }
+  "dependencies": {}
 }

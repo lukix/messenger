@@ -5,6 +5,7 @@ import MatchingContacts from './searchResults/MatchingContacts'
 import NewConversation from './searchResults/NewConversation'
 import AutosuggestConversationInput from './AutosuggestConversationInput'
 import axios from '../others/axiosInstance'
+import showShareLinkInactivePopup from '../others/shareLinkInactivePopup'
 
 const style = {
 	main: {},
@@ -65,10 +66,7 @@ export default class SearchCard extends React.Component {
 					this.search(data.publicKey)
 					this.setState({ isFromSharedUrl: true })
 				})
-				.catch((err) => {
-					//TODO
-					console.log(err)
-				})
+				.catch(showShareLinkInactivePopup)
 		}
 	}
 	pinConversation(publicKey) {

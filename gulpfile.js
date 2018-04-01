@@ -70,6 +70,7 @@ gulp.task('default', () => {
 function createBrowserReloader() {
 	let enabled = false
 	let initialized = false
+	const serverPort = process.env.PORT || 3000
 	return {
 		enable: () => {
 			enabled = true
@@ -79,11 +80,9 @@ function createBrowserReloader() {
 				browserSync.reload()
 			} else if (enabled) {
 				browserSync.init({
-					server: {
-						baseDir: destDir,
-					},
+					proxy: `http://localhost:${serverPort}`,
 					logLevel: 'silent',
-					port: 3000,
+					port: 3001,
 					notify: false,
 				})
 				initialized = true

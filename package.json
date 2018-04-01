@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm-run-all build server",
-    "watch": "gulp",
+    "watch": "concurrently \"node ./server.js\" \"gulp\"",
     "build": "gulp build",
     "server": "node ./server.js",
     "test": "mocha --require babel-core/register"
@@ -23,6 +23,7 @@
     "browser-sync": "2.23.6",
     "browserify": "15.2.0",
     "colors": "1.2.1",
+    "concurrently": "3.5.1",
     "del": "3.0.0",
     "emotion": "8.0.12",
     "eslint": "4.16.0",

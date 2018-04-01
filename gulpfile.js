@@ -121,6 +121,7 @@ function bundleApp() {
 		CONFIG: () => JSON.stringify({
 			apiUrl: process.env.API_URL || 'http://localhost:8080/api/',
 			socketServerUrl: process.env.SOCKET_URL || 'http://localhost:8080',
+			frontUrl: process.env.SITE_URL || 'http://localhost:3001',
 		}),
 	}
 	return browserify({

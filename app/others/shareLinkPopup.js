@@ -19,7 +19,7 @@ const shareLinkPopupClass = css`
 
 export default function showShareLinkPopup(publicKey) {
 	const titleText = 'Share your key via URL'
-	const baseUrl = 'https://safe-messenger.herokuapp.com/'
+	const baseUrl = `${CONFIG.frontUrl}/`
 	return () => {
 		const text = `
 		<input

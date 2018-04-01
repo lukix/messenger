@@ -36,7 +36,7 @@ import { fixNotSyncedMessages } from './others/syncStatusCheck'
 		<Provider store={store}>
 			<BrowserRouter>
 				<div>
-					<Route exact path="/" component={App} />
+					<Route path="/:shareId?" component={App} />
 				</div>
 			</BrowserRouter>
 		</Provider>

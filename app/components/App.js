@@ -39,7 +39,8 @@ const style = {
 	versionName: {},
 }
 
-export default function App() {
+export default function App({ match }) {
+	const { shareId } = match.params
 	const cardWidth = '600px'
 	const cardMaxWidth = 'calc(100% - 60px)'
 	const titleStyles = (matches) => ({
@@ -66,7 +67,10 @@ export default function App() {
 			</h1> }
 		</MediaQuery>
 
-		<SearchCardContainer style={{ width: cardWidth, maxWidth: cardMaxWidth }} />
+		<SearchCardContainer
+			style={{ width: cardWidth, maxWidth: cardMaxWidth }}
+			shareId={shareId}
+		/>
 		<ConversationsListContainer cardStyle={{ width: cardWidth, maxWidth: cardMaxWidth }} />
 	</div>
 }

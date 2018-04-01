@@ -5,7 +5,6 @@ const style = {
 	main: {
 		paddingTop: '15px',
 		textOverflow: 'ellipsis',
-		whiteSpace: 'nowrap',
 		overflow: 'hidden',
 	},
 }
@@ -18,9 +17,13 @@ export default class NewConversation extends React.Component {
 		this.props.onMessageSend(this.props.publicKey, message)
 	}
 	render() {
-		const { style: customStyle, publicKey } = this.props
-		return <div style={{ ...style.main, ...customStyle }}>
-			<b>Start a conversation with { publicKey }</b><br />
+		const { style: customStyle, publicKey, customText } = this.props
+		const infoText = customText === undefined
+			? `Start a conversation with ${publicKey}`
+			: customText
+		const whitespaceStyle = customText === undefined ? { whiteSpace: 'nowrap' } : {}
+		return <div style={{ ...style.main, ...whitespaceStyle, ...customStyle  }}>
+			<b>{infoText}</b><br />
 			<MessageSendPanel
 				style={{ marginTop: '5px' }}
 				onMessageSend={ this.messageSendHandler }

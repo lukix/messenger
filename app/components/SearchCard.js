@@ -47,6 +47,7 @@ export default class SearchCard extends React.Component {
 		this.state = {
 			searchText: '',
 			searchResult: null,
+			isFromSharedUrl: false,
 		}
 
 		this.messageSendHandler = this.messageSendHandler.bind(this)
@@ -62,6 +63,7 @@ export default class SearchCard extends React.Component {
 				.then(({ data }) => {
 					this.state.searchText = `Shared URL: /${shareId}`
 					this.search(data.publicKey)
+					this.setState({ isFromSharedUrl: true })
 				})
 				.catch((err) => {
 					//TODO
@@ -88,6 +90,7 @@ export default class SearchCard extends React.Component {
 		this.setState({ searchText: newValue })
 	}
 	search(searchText) {
+		this.setState({ isFromSharedUrl: false })
 		if (searchText.trim() === '') {
 			this.resetSearchResults()
 			return
@@ -109,7 +112,7 @@ export default class SearchCard extends React.Component {
 		}
 	}
 	render() {
-		const { searchText, searchResult } = this.state
+		const { searchText, searchResult, isFromSharedUrl } = this.state
 		const { style: customStyle, contacts } = this.props
 		const resultElement = searchResult === null
 			? ''
@@ -124,6 +127,12 @@ export default class SearchCard extends React.Component {
 					publicKey={searchResult.newConversationKey}
 					style={style.searchResults}
 					onMessageSend={this.messageSendHandler}
+					customText={
+						isFromSharedUrl
+							? `	Someone has invited you to start a conversation
+									by sharing this URL with you. Say hello:`
+							: undefined
+					}
 				/>
 		return <Card style={{ ...style.main, ...customStyle }}>
 			<div style={style.searchPanel}>

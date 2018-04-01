@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "axios": "0.17.1",
+    "compression": "1.7.2",
     "crypto2": "0.3.3",
     "express": "4.16.3",
     "moment": "2.20.1",

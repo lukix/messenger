@@ -4,6 +4,8 @@ import SharedStyles from '../others/SharedStyles'
 import MatchingContacts from './searchResults/MatchingContacts'
 import NewConversation from './searchResults/NewConversation'
 import AutosuggestConversationInput from './AutosuggestConversationInput'
+import axios from '../others/axiosInstance'
+import showShareLinkInactivePopup from '../others/shareLinkInactivePopup'
 
 const style = {
 	main: {},
@@ -46,13 +48,26 @@ export default class SearchCard extends React.Component {
 		this.state = {
 			searchText: '',
 			searchResult: null,
+			isFromSharedUrl: false,
 		}
-		
+
 		this.messageSendHandler = this.messageSendHandler.bind(this)
 		this.onSearchButtonClick = this.onSearchButtonClick.bind(this)
 		this.pinConversation = this.pinConversation.bind(this)
 		this.search = this.search.bind(this)
 		this.onSearchTextChange = this.onSearchTextChange.bind(this)
+	}
+	componentDidMount() {
+		const { shareId } = this.props
+		if(shareId) {
+			axios.get(`/publicKeys/${shareId}`)
+				.then(({ data }) => {
+					this.state.searchText = `Shared URL: /${shareId}`
+					this.search(data.publicKey)
+					this.setState({ isFromSharedUrl: true })
+				})
+				.catch(showShareLinkInactivePopup)
+		}
 	}
 	pinConversation(publicKey) {
 		this.resetSearchResults()
@@ -73,18 +88,19 @@ export default class SearchCard extends React.Component {
 		this.setState({ searchText: newValue })
 	}
 	search(searchText) {
-		if(searchText.trim() === '') {
+		this.setState({ isFromSharedUrl: false })
+		if (searchText.trim() === '') {
 			this.resetSearchResults()
 			return
 		}
-		if(matchesKeyFormat(searchText)) {
+		if (matchesKeyFormat(searchText)) {
 			contactExists(searchText, this.props.contacts)
 				? this.pinConversation(searchText)
 				: this.setState({ searchResult: { newConversationKey: searchText } })
 		} else {
 			const matchingResults = findMatchingContacts(searchText, this.props.contacts)
 			const exactResult = matchingResults.find(contact => contact.name === searchText)
-			if(exactResult !== undefined) {
+			if (exactResult !== undefined) {
 				this.pinConversation(exactResult.publicKey)
 			} else {
 				this.setState({
@@ -94,25 +110,31 @@ export default class SearchCard extends React.Component {
 		}
 	}
 	render() {
-		const { searchText, searchResult } = this.state
+		const { searchText, searchResult, isFromSharedUrl } = this.state
 		const { style: customStyle, contacts } = this.props
 		const resultElement = searchResult === null
 			? ''
 			: searchResult.contacts !== undefined
-				?	<MatchingContacts
-					contacts={ searchResult.contacts }
-					searchText={ searchResult.searchText }
-					style={ style.searchResults }
-					pinConversation={ this.pinConversation }
+				? <MatchingContacts
+					contacts={searchResult.contacts}
+					searchText={searchResult.searchText}
+					style={style.searchResults}
+					pinConversation={this.pinConversation}
 				/>
 				: <NewConversation
-					publicKey={ searchResult.newConversationKey }
-					style={ style.searchResults }
-					onMessageSend={ this.messageSendHandler }
+					publicKey={searchResult.newConversationKey}
+					style={style.searchResults}
+					onMessageSend={this.messageSendHandler}
+					customText={
+						isFromSharedUrl
+							? `	Someone has invited you to start a conversation
+									by sharing this URL with you. Say hello:`
+							: undefined
+					}
 				/>
 		return <Card style={{ ...style.main, ...customStyle }}>
-			<div style={ style.searchPanel }>
-				<div style={ style.autosuggestWrapper }>
+			<div style={style.searchPanel}>
+				<div style={style.autosuggestWrapper}>
 					<AutosuggestConversationInput {...{
 						contacts,
 						search: this.search,
@@ -121,11 +143,11 @@ export default class SearchCard extends React.Component {
 						placeholder: 'Type public key or name',
 					}} />
 				</div>
-				<button style={ style.button } onClick={ this.onSearchButtonClick }>
+				<button style={style.button} onClick={this.onSearchButtonClick}>
 					<i className="fas fa-search"></i>
 				</button>
 			</div>
-			{ resultElement }
+			{resultElement}
 		</Card>
 	}
 }

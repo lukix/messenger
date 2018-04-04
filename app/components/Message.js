@@ -74,7 +74,7 @@ export default function Message({ style: customStyle, children, left, synced,
 			className="inner"
 			style={{ ...borderRadius, opacity }}
 		>
-			<Linkify className="content">{ children }</Linkify>
+			<Linkify className="content" properties={{ target: '_blank' }}>{ children }</Linkify>
 		</div>
 		<ReactTooltip id={ tooltipId } place={ tooltipPlace } type="dark" effect="solid">
 			<span>{ messageDate }</span>

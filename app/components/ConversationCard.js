@@ -62,7 +62,7 @@ const style = {
 		margin: '10px 0',
 	},
 	scrollArea: {
-		padding: '10px',
+		padding: '15px',
 	},
 	conversationOptions: {
 		display: 'flex',

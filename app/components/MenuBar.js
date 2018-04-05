@@ -3,6 +3,7 @@ import Colors from '../others/Colors'
 import MediaQuery from 'react-responsive'
 import KeysBox from './menuBoxes/KeysBox'
 import SettingsBox from './menuBoxes/SettingsBox'
+import onClickOutside from 'react-onclickoutside'
 
 const style = {
 	main: {
@@ -87,10 +88,16 @@ const style = {
 export default class MenuBar extends React.Component {
 	constructor(props) {
 		super(props)
+		const clickOutsideConfig = { handleClickOutside: () => this.handleOutsideItemClick }
 		this.state = {
 			selectedItem: null,
+			clickOutsideComponents: {
+				KeysBox: onClickOutside(KeysBox, clickOutsideConfig),
+				SettingsBox: onClickOutside(SettingsBox, clickOutsideConfig),
+			},
 		}
 		this.handleItemClick = this.handleItemClick.bind(this)
+		this.handleOutsideItemClick = this.handleOutsideItemClick.bind(this)
 	}
 	handleItemClick(itemIndex) {
 		return () => {
@@ -99,8 +106,14 @@ export default class MenuBar extends React.Component {
 			})
 		}
 	}
+	handleOutsideItemClick() {
+		this.setState({
+			selectedItem: null,
+		})
+		
+	}
 	render() {
-		const { selectedItem } = this.state
+		const { selectedItem, clickOutsideComponents } = this.state
 		const { keys, createNewKey, wipeAppData, keyRequestInProgress,
 			messageSoundOn, setMessageSoundOn } = this.props
 		const menuItems = [
@@ -108,15 +121,17 @@ export default class MenuBar extends React.Component {
 			{ label: 'Settings', icon: 'fas fa-cog' },
 		]
 		const menuBoxes = [
-			<KeysBox
+			<clickOutsideComponents.KeysBox
 				keys={ keys }
 				createNewKey={ createNewKey }
 				keyRequestInProgress={ keyRequestInProgress }
+				eventTypes="click"
 			/>,
-			<SettingsBox
+			<clickOutsideComponents.SettingsBox
 				wipeAppData={ wipeAppData }
 				messageSoundOn={ messageSoundOn }
 				setMessageSoundOn={ setMessageSoundOn }
+				eventTypes="click"
 			/>,
 		]
 		const dropdownStyle = (mobile) => ({

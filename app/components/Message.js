@@ -16,6 +16,7 @@ const mainClass = css`
 	.inner {
 		background: ${Colors.mainDark};
 		color: white;
+		word-wrap: break-word;
 		border-radius: 6px;
 		text-align: left;
 		padding: 5px 10px;

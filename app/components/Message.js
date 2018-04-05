@@ -7,25 +7,43 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 const mainClass = css`
-	margin: 5px 0
-	display: flex
-	flex-direction: column
-	color: ${Colors.mainDark}
-	border: solid ${Colors.mainDark}
-	border-width: 0
+	margin: 5px 0;
+	display: flex;
+	flex-direction: column;
+	color: ${Colors.mainDark};
+	border: solid ${Colors.mainDark};
+	border-width: 0;
 	.inner {
-		background: ${Colors.mainDark}
-		color: white
-		border-radius: 6px
-		text-align: left
-		padding: 5px 10px
-		width: auto
-		max-width: calc(100% - 50px)
-		display: inline-block
+		background: ${Colors.mainDark};
+		color: white;
+		word-wrap: break-word;
+		border-radius: 6px;
+		text-align: left;
+		padding: 5px 10px;
+		width: auto;
+		max-width: calc(100% - 50px);
+		display: inline-block;
+		position: relative;
+		.arrow {
+			position: absolute;
+			top: 0;
+			width: 0; 
+			height: 0; 
+			border-top: 0px solid transparent;
+			border-bottom: 8px solid transparent;
+		}
+		.arrow-left {
+			left: -5px;
+			border-right: 5px solid ${Colors.mainDark};
+		}
+		.arrow-right {
+			right: -5px;
+			border-left: 5px solid ${Colors.mainDark};
+		}
 	}
 	.content {
 		a {
-			color: white
+			color: white;
 		}
 	}
 `
@@ -34,7 +52,7 @@ export default function Message({ style: customStyle, children, left, synced,
 	const alignItems = left ? 'flex-start' : 'flex-end'
 	const borderRadius = left ? { borderTopLeftRadius: '0px' } : { borderTopRightRadius: '0px' }
 	const errorStyles = error
-		? { borderWidth: '0 3px 0 0', paddingRight: '5px', marginBottom: '10px' }
+		? { borderWidth: '0 3px 0 0', paddingRight: '7px', marginBottom: '10px' }
 		: {}
 	const errorInfo = !error
 		? ''
@@ -63,7 +81,7 @@ export default function Message({ style: customStyle, children, left, synced,
 		lastDay: '[Yesterday], HH:mm:ss',
 		sameElse: 'MMM Do YYYY, HH:mm:ss',
 	})
-	const tooltipId = 'date-' + moment(date).format()
+	const tooltipId = 'date-' + Math.round(Math.random() * 1e9)	//random id
 	const tooltipPlace = left ? 'left' : 'right'
 	return <div className={ mainClass } style={{ alignItems, ...errorStyles, ...customStyle }}>
 		<div
@@ -74,7 +92,8 @@ export default function Message({ style: customStyle, children, left, synced,
 			className="inner"
 			style={{ ...borderRadius, opacity }}
 		>
-			<Linkify className="content">{ children }</Linkify>
+			<div className={`arrow ${left ? 'arrow-left' : 'arrow-right'}`}></div>
+			<Linkify className="content" properties={{ target: '_blank' }}>{ children }</Linkify>
 		</div>
 		<ReactTooltip id={ tooltipId } place={ tooltipPlace } type="dark" effect="solid">
 			<span>{ messageDate }</span>

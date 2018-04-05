@@ -62,7 +62,7 @@ const style = {
 		margin: '10px 0',
 	},
 	scrollArea: {
-		padding: '10px',
+		padding: '15px',
 	},
 	conversationOptions: {
 		display: 'flex',
@@ -74,7 +74,7 @@ const style = {
 	},
 }
 const animationClass = css`
-	outline: 3px solid transparent
+	outline: 3px solid transparent;
 	animation: ${ flashAnimation } 0.6s ease infinite;
 `
 const transformNewlinesToJSX = (str) => str.split('\n').map(

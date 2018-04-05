@@ -5,14 +5,14 @@ import axios from './axiosInstance'
 
 const shareLinkPopupClass = css`
 	#swal2-content {
-		text-align: left
+		text-align: left;
 		.urlInput  {
 			font-family: 'Courier';
-			font-size: 1rem
-			font-weight: bold
-			width: 100%
-			margin: 5px 0 10px 0
-			display: block
+			font-size: 1rem;
+			font-weight: bold;
+			width: 100%;
+			margin: 5px 0 10px 0;
+			display: block;
 		}
 	}
 `

@@ -5,31 +5,31 @@ import Colors from '../../others/Colors'
 import showShareLinkPopup from '../../others/shareLinkPopup'
 
 const mainClass = css`
-	margin-bottom: 10px
+	margin-bottom: 10px;
 	.keyInputText {
-		width: 100%
-		background: transparent
-		border: none
-		color: white
-		margin: 1px 0
+		width: 100%;
+		background: transparent;
+		border: none;
+		color: white;
+		margin: 1px 0;
 	}
 	.topBar {
-		display: flex
-		flex-direction: row
-		justify-content: space-between
-		align-items: center
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
 	}
 	.shareButton {
-		border: none
-		padding: 0 8px
-		cursor: pointer
-		border-radius: 4px
-		background: white
-		color: black
-		height: 22px
-		font-size: 0.9rem
+		border: none;
+		padding: 0 8px;
+		cursor: pointer;
+		border-radius: 4px;
+		background: white;
+		color: black;
+		height: 22px;
+		font-size: 0.9rem;
 		&:hover {
-			background: ${Colors.mainLight}
+			background: ${Colors.mainLight};
 		}
 	}
 `

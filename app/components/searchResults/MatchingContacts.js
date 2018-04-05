@@ -3,15 +3,15 @@ import { css } from 'emotion'
 
 const mainClass = css`
 	& .resultText {
-		font-weight: bold
+		font-weight: bold;
 	}
 	& .listItem {
-		text-overflow: ellipsis
-		white-space: nowrap
-		overflow: hidden
-		cursor: pointer
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		cursor: pointer;
 		&:hover {
-			text-decoration: underline
+			text-decoration: underline;
 		}
 	}
 `

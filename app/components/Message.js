@@ -81,7 +81,7 @@ export default function Message({ style: customStyle, children, left, synced,
 		lastDay: '[Yesterday], HH:mm:ss',
 		sameElse: 'MMM Do YYYY, HH:mm:ss',
 	})
-	const tooltipId = 'date-' + moment(date).format()
+	const tooltipId = 'date-' + Math.round(Math.random() * 1e9)	//random id
 	const tooltipPlace = left ? 'left' : 'right'
 	return <div className={ mainClass } style={{ alignItems, ...errorStyles, ...customStyle }}>
 		<div

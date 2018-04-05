@@ -74,7 +74,7 @@ const style = {
 	},
 }
 const animationClass = css`
-	outline: 3px solid transparent
+	outline: 3px solid transparent;
 	animation: ${ flashAnimation } 0.6s ease infinite;
 `
 const transformNewlinesToJSX = (str) => str.split('\n').map(

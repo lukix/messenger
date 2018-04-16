@@ -164,7 +164,7 @@ export default class ConversationCard extends React.Component {
 	render() {
 		const { nameEditMode, useAnimationClass } = this.state
 		const { style: customStyle, conversation } = this.props
-		const { name: contactName, publicKey: contactKey, messages, pinned, 
+		const { name: contactName, publicKey: contactKey, messages, pinned,
 			keysPair } = conversation
 		const conversationName = contactName ? contactName : contactKey
 		const pinnedStateStyle = {
@@ -181,7 +181,7 @@ export default class ConversationCard extends React.Component {
 					error={ message.error }
 					removeMessage={ this.onMessageRemove(message.id) }
 					resendMessage={ this.onMessageResend(message.id, message.text) }
-					date={ message.date } 
+					date={ message.date }
 				>
 					{ transformNewlinesToJSX(message.text) }
 				</Message>
@@ -224,7 +224,7 @@ export default class ConversationCard extends React.Component {
 							{ conversationName }
 						</div>
 				}
-				
+
 				<div style={ style.conversationOptions }>
 					<img
 						src="./img/pin.png"

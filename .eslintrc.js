@@ -65,6 +65,17 @@ module.exports = {
         "prefer-const": ["warn"],
         "no-var": ["error"],
         "no-unused-vars": ["warn"],
-        "no-console": ["warn"]
+        "no-console": ["warn"],
+        "no-alert": ["error"],
+        "no-eval": ["error"],
+        "yoda": ["error", "never"],
+        "no-var": "error",
+        "eqeqeq": ["error", "always"],
+        "dot-notation": "error",
+        "max-lines": ["error", {
+            "max": 250,
+            "skipComments": true,
+            "skipBlankLines": true
+        }]
     }
 };

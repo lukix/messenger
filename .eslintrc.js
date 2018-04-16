@@ -54,8 +54,14 @@ module.exports = {
         "no-undef": ["error"],
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
         "object-curly-spacing": ["error", "always"],
-        "max-len": [2, 100, 4],
-
+        "max-len": ["error", {
+            "code": 100,
+            "tabWidth": 4,
+            "ignoreUrls": true,
+            "ignoreStrings": true,
+            "ignoreRegExpLiterals": true
+        }],
+        "no-trailing-spaces": ["error"],
         "prefer-const": ["warn"],
         "no-var": ["error"],
         "no-unused-vars": ["warn"],

@@ -29,5 +29,5 @@ export default function StatePersistance(localStorageObjectName) {
 				JSON.stringify(serialize(state))
 			)
 		},
-	} 
+	}
 }

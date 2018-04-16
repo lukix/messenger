@@ -7,7 +7,7 @@ const deserializeMessages = (messages) => messages.map(
 )
 const deserializeConversations =
 	(conversations) => conversations
-		.filter(({ keysPair }) => keysPair !== null)	
+		.filter(({ keysPair }) => keysPair !== null)
 		.map(
 			conversation => ({
 				...conversation,

@@ -4,7 +4,7 @@ import { encodeMessage, decodeMessage } from '../others/Encoding'
 import uuid from 'uuid/v1'
 import { startCreatingNewConversation, finishCreatingNewConversation } from './conversationsActions'
 import { removeFreeKey } from './keysActions'
-import { 
+import {
 	START_SENDING_MESSAGE,
 	FINISH_SENDING_MESSAGE,
 	ADD_MESSAGE,

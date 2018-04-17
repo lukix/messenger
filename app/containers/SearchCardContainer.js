@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import SearchCard from './../components/SearchCard'
-import { 
+import {
 	changePinStateAction,
 	addConversationAction,
 	fireFlashAnimation,

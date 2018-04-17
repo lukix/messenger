@@ -110,7 +110,6 @@ export default class MenuBar extends React.Component {
 		this.setState({
 			selectedItem: null,
 		})
-		
 	}
 	render() {
 		const { selectedItem, clickOutsideComponents } = this.state

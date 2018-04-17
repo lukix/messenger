@@ -1,4 +1,4 @@
-import { 
+import {
 	CHANGE_MESSAGE_SOUND_ON,
 } from '../actionTypes/index'
 

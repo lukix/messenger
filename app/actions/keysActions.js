@@ -1,7 +1,7 @@
 import webworkify from 'webworkify'
 import KeyGeneratorWorker from '../others/keyGeneratorWorker'
 import { registerPublicKeyListener } from '../others/sockets'
-import { 
+import {
 	ADD_NEW_KEY,
 	START_CREATING_NEW_KEY,
 	FINISH_CREATING_NEW_KEY,
